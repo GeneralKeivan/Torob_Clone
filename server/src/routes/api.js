@@ -9,7 +9,7 @@ const app = express();
 
 //app.use('/students',studentRoute);
 app.use('/accounts', accountRoute);
-app.use('/admin', adminRoute);
+app.use('/admins', adminRoute);
 app.use('/customers', customerRoute);
 app.use('/sellers', sellerRoute);
 

@@ -1,4 +1,4 @@
-import {GET_ACCOUNTS, VALIDATE_ACCOUNT, ADD_ACCOUNT} from '../constants/ActionTypes'
+import {GET_ACCOUNTS, VALIDATE_ACCOUNT, ADD_SELLER, ADD_CUSTOMER} from '../constants/ActionTypes'
 import axios from "axios";
 import history from '../history'
 import { resetWarningCache } from 'prop-types';
@@ -22,12 +22,11 @@ export const getAccounts = () => dispatch => {
 
 //validate username and password
 //check user type and send to correct location
-//might need some fixing in the end to work correctly
+
 export const validateAccount = (account) => {
     console.log("validate account ", account);
-    var correct = false;
     return (dispatch) => {
-        return fetch(API_URL + 'accounts/')
+        /*return fetch(API_URL + 'accounts/')
             .then((res) => {
                 console.log("response ", res);
                 for(var i = 0; i < res.accounts.length; i++){
@@ -35,7 +34,7 @@ export const validateAccount = (account) => {
                         if(account.password == res.accounts[i].password){
                             switch(res.accounts[i].type){
                                 case "Admin":
-                                    history.push('/accounts/admin/' + res.accounts[i]._id)
+                                    history.push('/accounts/admins/' + res.accounts[i]._id)
                                     i = res.accounts.length + 1;
                                     break;
                                 case "Customer":
@@ -61,21 +60,119 @@ export const validateAccount = (account) => {
                     type: VALIDATE_ACCOUNT,
                     payload: result.accounts
                 });
+            });*/
+        var c = fetch(API_URL + '/customers');
+        var s = fetch(API_URL + '/sellers');
+        var a = fetch(API_URL + '/admins');
+        var correct = "non";
+
+        for(var i = 0; i < a.admins.length; i++){
+            if(account.userName == a.admins[i].userName || account.email == a.admins[i].email){
+                if(account.password == a.admins[i].password){
+                    history.push('/accounts/admin/' + a.admins[i]._id)
+                    i = a.admins.length + 1;
+                    correct = "admin";
+                }
+            }
+        }
+
+        for(var i = 0; i < c.customers.length; i++){
+            if(account.userName == c.customers[i].userName || account.email == c.customers[i].email){
+                if(account.password == c.customers[i].password){
+                    history.push('/accounts/customer/' + c.customers[i]._id)
+                    i = c.customers.length + 1;
+                    correct = "customer";
+                }
+            }
+        }
+
+        for(var i = 0; i < a.admins.length; i++){
+            if(account.userName == s.sellers[i].userName || account.email == s.sellers[i].email){
+                if(account.password == s.sellers[i].password){
+                    history.push('/accounts/seller/' + s.sellers[i]._id)
+                    i = s.sellers + 1;
+                    correct = "seller";
+                }
+            }
+        }
+
+        if(correct == "admin"){
+            history.push('/accounts/admins');
+            return(a)
+            .then(result => {
+                console.log("account actions ", result);
+                dispatch({
+                    type: VALIDATE_ACCOUNT,
+                    payload: result.accounts
+                });
             });
+        }
+        else if(correct == 'customer'){
+            history.push('/accounts/customers');
+            return(c)
+            .then(result => {
+                console.log("account actions ", result);
+                dispatch({
+                    type: VALIDATE_ACCOUNT,
+                    payload: result.accounts
+                });
+            });
+        }
+        else if(correct == 'seller'){
+            history.push('/accounts/sellers');
+            return(s)
+            .then(result => {
+                console.log("account actions ", result);
+                dispatch({
+                    type: VALIDATE_ACCOUNT,
+                    payload: result.accounts
+                });
+            });
+        }
+        else{
+            history.push('/accounts/log-in');
+        }
+
+
     }
     
 }
 
 //add the account
-export const addAccount = (account) => {
+export const addCustomer = (account) => {
     console.log("account ", account);
     return (dispatch) => {
-        return axios.post(API_URL+'accounts/', account)
+        return axios.post(API_URL+'customers/', account)
             .then((res) => {
                 console.log("response ", res);
                 dispatch({ type: ADD_ACCOUNT, payload : res.data.result })
                 history.push(`/accounts/log-in`)
 
             });
+    }   
+}
+
+export const addSeller = (account) => {
+    console.log("account ", account);
+    return (dispatch) => {
+        return axios.post(API_URL+'sellers/', account)
+            .then((res) => {
+                console.log("response ", res);
+                dispatch({ type: ADD_ACCOUNT, payload : res.data.result })
+                history.push(`/accounts/log-in`)
+
+            });
+    }   
+}
+
+export const typeSeller = () => {
+    return (dispatch) => {
+        history.push('/accounts/sign-up/seller');
+    }   
+}
+
+export const typeCustomer = () => {
+    return (dispatch) => {
+        history.push('/accounts/sign-up/customer');
     }   
 }

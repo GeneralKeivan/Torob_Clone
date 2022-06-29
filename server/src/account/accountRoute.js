@@ -5,8 +5,14 @@ const router = express.Router();
 const controller = new accountController();
 
 
+
+router.get('/accounts/admins',controller.getAdmins);
+router.get('/accounts/customers',controller.getCustomers);
+router.get('/accounts/sellers',controller.getSellers);
 router.get('/accounts/',controller.getAccounts);
-router.post('/accounts/',controller.addAccounts);
+
+router.post('/accounts/customers',controller.addCustomers);
+router.post('/accounts/sellers',controller.addSellers);
 
 
 module.exports = router;

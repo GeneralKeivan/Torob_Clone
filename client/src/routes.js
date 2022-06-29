@@ -3,7 +3,9 @@ import {Route, Switch} from 'react-router-dom';
 import Home from './components/Home'
 
 import Accounts                                 from './components/Account/account'
-import SignUp                                   from './components/Account/accountSignUp'
+import AccountType                              from './components/Account/accountType'
+import CustomerSignUp                           from './components/Account/accountCustomerSignUp'
+import SellerSignUp                             from './components/Account/accountSellerSignUp'
 import LogIn                                    from './components/Account/accountLogIn'
 
 import Admins                                   from './components/Admin/admin'
@@ -37,7 +39,9 @@ const routing = () =>(
     <Route exact path="/" component={Home} label="Home"/>
 
         <Route exact path="/accounts/" components={Accounts} />
-        <Route exact path="/accounts/sign-up" components={SignUp} />
+        <Route exact path="/accounts/sign-up" components={AccountType} />
+        <Route exact path="/accounts/sign-up/customer" components={CustomerSignUp} />
+        <Route exact path="/accounts/sign-up/seller" components={SellerSignUp} />
         <Route exact path="/accounts/log-in" components={LogIn} />
 
         <Route exact path="/accounts/admin/:id" component={Admins} /> 
@@ -79,8 +83,8 @@ export default routing;
 // /accounts                                                                : shows the sign up or log in buttons
 
 
-// /accounts/login                                                          : login page
-// /accounts/signup                                                         : sign up page (can lead to login or main page)
+// /accounts/log-in                                                          : login page
+// /accounts/sign-up                                                         : sign up page (can lead to login or main page)
 // (put a choice for customer, seller, admin in login)
 // (dont put admin in signup, admin is introduced manually)
 

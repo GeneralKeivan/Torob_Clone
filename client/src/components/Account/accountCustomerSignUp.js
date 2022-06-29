@@ -1,5 +1,5 @@
 import React from 'react';
-import { addAccounts } from '../../actions/accountAction';
+import { addCustomer } from '../../actions/accountAction';
 import {connect } from 'react-redux';
 import history from '../../history'
 import axios from "axios"
@@ -7,7 +7,7 @@ import { string } from 'prop-types';
 
 //This code is for updating student id
 
-class SignUp extends React.Component {
+class CustomerSignUp extends React.Component {
   constructor(props){
       super(props);
       const location = history.location
@@ -16,7 +16,7 @@ class SignUp extends React.Component {
   }
 
   static propTypes = {
-    addAccount: PropTypes.func.isRequired,
+    addCustomer: PropTypes.func.isRequired,
   }
 
   handleChangeFor = (propertyName) => (event) => {
@@ -37,15 +37,6 @@ class SignUp extends React.Component {
     var email = document.forms["myForm"]["email"].value;
     var password = document.forms["myForm"]["password"].value;
 
-
-    var type;
-    if(document.forms["myForm"]["seller"].checked){
-        type = "seller";
-    }
-    else{
-        type = "customer";
-    }
-
     var emailCheck = validateEmail(email);
     var userCheck = validateUser(userName, email);
     var passwordCheck = validatePassword(password);
@@ -56,7 +47,7 @@ class SignUp extends React.Component {
         this.state.account.password = password;
         this.state.account.type = type;
 
-        this.props.addAccount(this.state.account);
+        this.props.addCustomer(this.state.account);
     }
   }
 
@@ -103,11 +94,6 @@ class SignUp extends React.Component {
                     <input type="checkbox" onclick="showPassword()">Show Password</input>
                 </div>
 
-                <input type="radio" id="customer" className='customer' name="mode" value="HTML"/>
-                <label for="customer">Customer</label><br/>
-                <input type="radio" id="seller" classname='customer' name="mode" value="CSS"/>
-                <label for="seller">Seller</label><br/>
-
               <button type="submit" className="btn btn-success btn-lg">
                 Sign Up
               </button>
@@ -133,14 +119,18 @@ function showPassword() {
 //but at the moment i cant think of another way
 const validateUser = (userName, email) => {
     const API_URL = 'http://localhost:3001/api/';
-    a = fetch(API_URL + 'accounts/')
+    a = fetch(API_URL + 'customers/')
+    b = fetch(API_URL + 'sellers/')
+    c = fetch(API_URL + 'admins/')
     console.log("a = ", a);
+    console.log("b = ", b);
+    console.log("c = ", c);
     for(var i = 0; i < a.accounts.length; i++){
-        if(email == a.accounts[i].email){
+        if(email == a.customers[i].email || email == b.sellers[i].email || email == c.admins[i].email){
             window.alert("A user with the same Email already exists");
             return false;
         }
-        if(userName == a.accounts[i].userName){
+        if(userName == a.customers[i].userName || userName == b.sellers[i].userName || userName == a.admins[i].userName){
             window.alert("A user with the same Username already exists");
             return false;
         }
@@ -184,8 +174,8 @@ const mapStateToProps = (state) => {
   }
   const mapDispatchToProps = (dispatch) => {
     return {
-        checkDuplicateAccounts: (account) => dispatch(addAccount(account)),
+        addCustomer: (account) => dispatch(addCustomer(account)),
     }
   }
   
-  export default connect(mapStateToProps,mapDispatchToProps)(SignUp);
+  export default connect(mapStateToProps,mapDispatchToProps)(CustomerSignUp);

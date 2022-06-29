@@ -6,6 +6,9 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 let customerSchema = new Schema({
     //put what needs to be saved here
+    userName : {type:String, default : null},
+    password : {type:String, default : null},
+    email    : {type:String, default : null},
 },{timestamps : true});
 
 const customer = mongoose.model('customer', customerSchema);
