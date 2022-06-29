@@ -18,9 +18,10 @@ class SellerStores extends Component {
         sellerId = windows.location.href.split('/')[4];
         this.props.getSeller(sellerId);
     }
+    
     static propTypes = {
-        //getStudents: PropTypes.func.isRequired,
-        //students: PropTypes.object.isRequired
+        getSeller: PropTypes.func.isRequired,
+        seller: PropTypes.object.isRequired
     }
 
     render() {    
@@ -70,11 +71,11 @@ class SellerStores extends Component {
 }
 
 const mapStateToProps = (state) => ({
-
+    seller: state.seller,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-
+    getSeller: (SellerId) => dispatch(getSeller(sellerId)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SellerStores);

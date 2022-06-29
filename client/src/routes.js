@@ -27,9 +27,7 @@ import SellerChange                             from './components/Seller/seller
 import SellerReviews                            from './components/Seller/sellerReviews'
 import SellerStores                             from './components/Seller/sellerStores'
 import SellerNewStores                          from './components/Seller/sellerNewStores'
-import SellerChangeStores                       from './components/Seller/sellerChangeStores'
 import SellerStoresNewProduct                   from './components/Seller/sellerStoresNewProduct'
-import SellerStoresChangeProduct                from './components/Seller/sellerStoresChangeProduct'
 
 
 
@@ -65,9 +63,7 @@ const routing = () =>(
         <Route exact path="/accounts/sellers/:id/reviews" component={SellerReviews} /> 
         <Route exact path="/accounts/sellers/:id/stores" component={SellerStores} /> 
         <Route exact path="/accounts/sellers/:id/stores/new" component={SellerNewStores} /> 
-        <Route exact path="/accounts/sellers/:id/stores/change" component={SellerChangeStores} /> 
         <Route exact path="/accounts/sellers/:id/stores/:id/product/new" component={SellerStoresNewProduct} /> 
-        <Route exact path="/accounts/sellers/:id/stores/:id/product/change" component={SellerStoresChangeProduct} /> 
 
 
 
@@ -115,7 +111,6 @@ export default routing;
 // /accounts/sellers/:id/stores/new                                         : add new store
 // /accounts/sellers/:id/stores/change                                      : change store info
 // /accounts/sellers/:id/stores/:id/product/new                             : show create product page for specific store
-// /accounts/sellers/:id/stores/:id/product/change                          : show change product page for specific store
 
 
 
