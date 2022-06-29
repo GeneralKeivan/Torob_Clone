@@ -29,16 +29,14 @@ export const addStore = (seller) => {
     }
 }
 
-export const getSeller = (sellerId) => dispatch => {
-    return fetch(API_URL + 'accounts/')
-    .then((response) => {
-        return response.json();
-    })
-    .then(result => {
-        console.log("account actions ", result);
-        dispatch({
-            type: GET_ACCOUNTS,
-            payload: result.accounts
-        });
-    });
+export const getSeller = (sellerId) => {
+    return (dispatch) => {
+        var sellers = fetch(API_URL + 'sellers/')
+        for(var i = 0; i < sellers.sellers.length; i++){
+            if(sellers.sellers[i].id == sellerId){
+                return(sellers.sellers[i]);
+            }
+        }
+    }
 }
+
