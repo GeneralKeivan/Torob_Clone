@@ -9,6 +9,16 @@ let customerSchema = new Schema({
     userName : {type:String, default : null},
     password : {type:String, default : null},
     email    : {type:String, default : null},
+    favorites: [
+        {
+            link : {type:String, default : null},
+        }
+    ],
+    recents  : [
+        {
+            link : {type:String, default : null},
+        }
+    ],
 },{timestamps : true});
 
 const customer = mongoose.model('customer', customerSchema);

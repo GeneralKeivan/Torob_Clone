@@ -5,10 +5,76 @@ import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types'
 import {connect } from 'react-redux';
 import history from "../../history"
+import sellerChange from './sellerChange';
+import {getSeller} from '../../actions/sellerAction'
 
+var sellerId;
 class SellerStores extends Component {
     constructor(props){
         super(props);
-        //this.change
     }
+
+    componentDidMount() {
+        sellerId = windows.location.href.split('/')[4];
+        this.props.getSeller(sellerId);
+    }
+    static propTypes = {
+        //getStudents: PropTypes.func.isRequired,
+        //students: PropTypes.object.isRequired
+    }
+
+    render() {    
+
+        const stores = this.props.stores;
+
+        const  storeList = (
+            <div>
+                <div className="col-lg-12 table-responsive">
+                    <table className="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Store Name</th>
+                            <th scope="col">View Store</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+            
+                        {
+                        stores.map((store,index) =>
+                            <tr key={index}>
+                            <td>{store.name}</td>
+                            <td> <i className="fa fa-edit btn btn-info" onClick={() => this.viewStore(store)}> </i></td>   &nbsp;
+                            </tr>
+                        )
+                        }
+                    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+      )
+        return (
+          <div className="row">
+            <div className="col-lg-12">
+              <Link to={'/account/seller/' + sellerId + '/stores/new'} ><button className="btn btn-success pull-right" >New Store</button></Link>
+            </div>
+            <div className="col-lg-12 text-center">
+            {
+              stores.length === 0 ? 'No Stores Create New Stores' :storeList
+            }
+            </div>
+          </div>
+        );
+    }
+
 }
+
+const mapStateToProps = (state) => ({
+
+})
+
+const mapDispatchToProps = (dispatch) => ({
+
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SellerStores);

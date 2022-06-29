@@ -17,7 +17,10 @@ class SellerNewStores extends React.Component {
         console.log("this.props ", this.props);
 
         var storeName = document.forms["myForm"]["storeName"].value;
-        this.state.seller.stores.push({name: storeName})
+        var storeId = parseInt(this.state.seller.count) + 1;
+        var storeCount = parseInt(this.state.seller.count + 1);
+        this.state.seller.stores.push({name: storeName, id: storeId})
+        this.state.seller.count = parseInt(storeCount);
         
         this.props.addStore(this.state.seller);
     }
