@@ -33,13 +33,13 @@ class SellerNewStores extends React.Component {
             <form name="myForm" onSubmit={this.handleUpdate}>
                 
                 <div className="form-group">
-                <label htmlFor="storeName">Store Name</label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="storeName"
-                    name="storeName"
-                    autoComplete="off"
+                    <label htmlFor="storeName">Store Name</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="storeName"
+                        name="storeName"
+                        autoComplete="off"
                     />
                 </div>
 

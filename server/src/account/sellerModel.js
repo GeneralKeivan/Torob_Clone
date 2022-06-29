@@ -21,8 +21,8 @@ let sellerSchema = new Schema({
                     name : {type:String, default : null},
                     price : {type:Number, default : null},
                     link : {type:String, default : null},
-                    generalType : {type:String, default : null},
-                    detailedTyped : {type:String, default : null},
+                    model : {type:String, default : null},
+                    brand : {type:String, default : null},
                 }
             ]
         }
