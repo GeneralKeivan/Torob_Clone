@@ -2,6 +2,10 @@ import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import Home from './components/Home'
 
+import Accounts                                 from './components/Account/account'
+import SignUp                                   from './components/Account/accountSignUp'
+import LogIn                                    from './components/Account/accountLogIn'
+
 import Admins                                   from './components/Admin/admin'
 
 
@@ -32,6 +36,9 @@ const routing = () =>(
     <Switch>
     <Route exact path="/" component={Home} label="Home"/>
 
+        <Route exact path="/accounts/" components={Accounts} />
+        <Route exact path="/accounts/sign-up" components={SignUp} />
+        <Route exact path="/accounts/log-in" components={LogIn} />
 
         <Route exact path="/accounts/admin/:id" component={Admins} /> 
 
