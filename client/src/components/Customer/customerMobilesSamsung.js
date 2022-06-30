@@ -7,7 +7,7 @@ import history from "../../history"
 const API_URL = 'http://localhost:3001/api/';
 
 var products;
-var tabletProducts = [];
+var mobileProducts = [];
 var searchedProducts = [];
 var lowHighProducts = [];
 var highLowProducts = [];
@@ -16,7 +16,7 @@ var id = window.location.href.split('/')[4];
 var url = 'accounts/customers/' + id;
 
 var sortType = "none"
-class CustomerTablets extends Component {
+class CustomerMobileSamsung extends Component {
 
     constructor(props){
         super(props);
@@ -29,22 +29,22 @@ class CustomerTablets extends Component {
         products = fetch(API_URL + 'products');
 
         for(var i = 0; i < products.length; i++){
-            if(products[i].model === "tablet"){
-                tabletProducts.push(products[i])
+            if(products[i].model === "mobile" && products[i].brand === "samsung"){
+                mobileProducts.push(products[i])
             }
         }
 
-        lowHighProducts = tabletProducts;
-        highLowProducts = tabletProducts;
-        recentProducts  = tabletProducts;
+        lowHighProducts = mobileProducts;
+        highLowProducts = mobileProducts;
+        recentProducts  = mobileProducts;
 
         //this.props.updateSeller(this.state.seller);
         lowHighProducts.sort(function (x, y) {
-            return x.cheap - y.cheap;
+            return parseInt(x.cheap) - parseInt(y.cheap);
         });
 
         highLowProducts.sort(function (x, y) {
-            return y.expensive - x.expensive;
+            return parseInt(y.expensive) - parseInt(x.expensive);
         });
 
         recentProducts.sort(function (x, y) {
@@ -70,7 +70,7 @@ class CustomerTablets extends Component {
 
         //might need to add a .products to the end of fetch
         for(var i = 0; i < products.length; i++){
-            if((products[i].name.inludes(searchBar) || products[i].brand.inludes(searchBar)) && products[i].model === "tablet"){
+            if(products[i].name.inludes(searchBar) && products[i].brand === "samsung" && products[i].model === "mobile"){
                 searchedProducts.push(products[i])
             }
         }
@@ -81,11 +81,11 @@ class CustomerTablets extends Component {
 
         //this.props.updateSeller(this.state.seller);
         lowHighProducts.sort(function (x, y) {
-            return x.cheap - y.cheap;
+            return parseInt(x.cheap) - parseInt(y.cheap);
         });
 
         highLowProducts.sort(function (x, y) {
-            return y.expensive - x.expensive;
+            return parseInt(y.expensive) - parseInt(x.expensive);
         });
 
         recentProducts.sort(function (x, y) {
@@ -110,9 +110,9 @@ class CustomerTablets extends Component {
         sortType = t;
     }
 
-    specificTablet(name){
+    specificPhone(name){
         console.log("this.state ", viewProductDetail);
-        history.push('accounts/customers/' + id + "/product/tablets/" + name)
+        history.push('accounts/customers/' + id + "/product/mobiles/" + name)
     }
 
     render() {
@@ -152,41 +152,41 @@ class CustomerTablets extends Component {
             </div>
         )
 
-        const productTablet = (
-            <div>
-              <div className="col-lg-12 table-responsive">
+        const productMobile = (
+          <div>
+            <div className="col-lg-12 table-responsive">
 
-                <table className="table table-striped">
-                  <thead>
-                    <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">Price Range</th>
-                      <th scope="col">Number of Sellers</th>
-                      <th scope="col"></th>
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price Range</th>
+                    <th scope="col">Number of Sellers</th>
+                    <th scope="col"></th>
 
+                  </tr>
+                </thead>
+                <tbody>
+    
+                {
+                  mobileProducts.map((product,index) =>
+                    <tr key={index}>
+                      <td>{product.name}</td>
+                      <td>{product.cheap + " - " + product.expensive}</td>
+                      <td>{product.sellers.length}</td>
+                      <td> 
+                          <i className="fa fa-edit btn btn-info" onClick={() => this.viewProduct(product)}> </i>   &nbsp;
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-      
-                  {
-                    tabletProducts.map((product,index) =>
-                      <tr key={index}>
-                        <td>{product.name}</td>
-                        <td>{product.cheap + " - " + product.expensive}</td>
-                        <td>{product.sellers.length}</td>
-                        <td> 
-                            <i className="fa fa-edit btn btn-info" onClick={() => this.viewProduct(product)}> </i>   &nbsp;
-                        </td>
-                      </tr>
-                    )
-                  }
-                
-                  </tbody>
-                </table>
-              </div>
+                  )
+                }
+              
+                </tbody>
+              </table>
             </div>
+          </div>
         )
-
+        
         const productLowHigh = (
             <div>
               <div className="col-lg-12 table-responsive">
@@ -308,9 +308,9 @@ class CustomerTablets extends Component {
                     <button onclick="this.sort('high')">Highest to Lowest</button>
                     <button onclick="this.sort('recent')">Most Recent</button>
 
-                    <button onclick="this.specificTablet('samsung')">Samsung</button>
-                    <button onclick="this.specificTablet('xiaomi')">Xiaomi</button>
-                    <button onclick="this.specificTablet('apple')">Apple</button>
+                    <button onclick="this.specificPhone('samsung')">Samsung</button>
+                    <button onclick="this.specificPhone('xiaomi')">Xiaomi</button>
+                    <button onclick="this.specificPhone('apple')">Apple</button>
                 </div>
                 <form name="myForm" onSubmit={this.handleUpdate}>
                     <div className="form-group">
@@ -331,7 +331,7 @@ class CustomerTablets extends Component {
                 <div className="row">
                     <div className="col-lg-12 text-center">
                     {
-                        searchedProducts.length === 0 ? productTablet : (sortType === "low" ? productLowHigh : (sortType ==="high" ? productHighLow : (sortType === "recent" ? productRecent : productList)))
+                        searchedProducts.length === 0 ? productMobile : (sortType === "low" ? productLowHigh : (sortType ==="high" ? productHighLow : (sortType === "recent" ? productRecent : productList)))
                     }
                     </div>
                 </div>
@@ -350,4 +350,4 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Customer);*/
-export default (CustomerTablets)
+export default (CustomerMobileSamsung)

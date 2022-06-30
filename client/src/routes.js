@@ -12,10 +12,22 @@ import Admins                                   from './components/Admin/admin'
 
 
 import Customers                                from './components/Customer/customer'
-import CustomerSearch                           from './components/Customer/customerSearch'
+
 import CustomerMobiles                          from './components/Customer/customerMobiles'
+import CustomerMobileSamsung                    from './components/Customer/customerMobilesSamsung'
+import CustomerMobileXiaomi                     from './components/Customer/customerMobilesXiaomi'
+import CustomerMobileApple                      from './components/Customer/customerMobilesApple'
+
 import CustomerTablets                          from './components/Customer/customerTablets'
+import CustomerTabletSamsung                    from './components/Customer/customerTabletsSamsung'
+import CustomerTabletXiaomi                     from './components/Customer/customerTabletsXiaomi'
+import CustomerTabletApple                      from './components/Customer/customerTabletsApple'
+
 import CustomerLaptops                          from './components/Customer/customerLaptops'
+import CustomerLaptopLenovo                     from './components/Customer/customerLaptopsLenovo'
+import CustomerLaptopAsus                       from './components/Customer/customerLaptopsAsus'
+import CustomerLaptopApple                      from './components/Customer/customerLaptopsApple'
+
 import CustomerProduct                          from './components/Customer/customerProduct'
 import CustomerReview                           from './components/Customer/customerReview'
 import CustomerFavorites                        from './components/Customer/customerFavorites'
@@ -51,6 +63,18 @@ const routing = () =>(
         <Route exact path="/accounts/customers/:id/product/mobiles" component={CustomerMobiles} /> 
         <Route exact path="/accounts/customers/:id/product/tablets" component={CustomerTablets} /> 
         <Route exact path="/accounts/customers/:id/product/laptops" component={CustomerLaptops} />
+
+        <Route exact path="/accounts/customers/:id/product/mobiles/samsung" component={CustomerMobileSamsung} /> 
+        <Route exact path="/accounts/customers/:id/product/mobiles/xiaomi" component={CustomerMobileXiaomi} /> 
+        <Route exact path="/accounts/customers/:id/product/mobiles/apple" component={CustomerMobileApple} /> 
+
+        <Route exact path="/accounts/customers/:id/product/tablets/samsung" component={CustomerTabletSamsung} /> 
+        <Route exact path="/accounts/customers/:id/product/tablets/xiaomi" component={CustomerTabletXiaomi} /> 
+        <Route exact path="/accounts/customers/:id/product/tablets/apple" component={CustomerTabletApple} /> 
+
+        <Route exact path="/accounts/customers/:id/product/laptops/lenovo" component={CustomerLaptopLenovo} /> 
+        <Route exact path="/accounts/customers/:id/product/laptops/asus" component={CustomerLaptopAsus} /> 
+        <Route exact path="/accounts/customers/:id/product/laptops/apple" component={CustomerLaptopApple} /> 
 
         <Route exact path="/accounts/customers/:id/product/:id" component={CustomerProduct} /> 
         <Route exact path="/accounts/customers/:id/sellers/:id/review" component={CustomerReview} />

@@ -16,7 +16,7 @@ var id = window.location.href.split('/')[4];
 var url = 'accounts/customers/' + id;
 
 var sortType = "none"
-class CustomerTablets extends Component {
+class CustomerTabletSamsung extends Component {
 
     constructor(props){
         super(props);
@@ -29,7 +29,7 @@ class CustomerTablets extends Component {
         products = fetch(API_URL + 'products');
 
         for(var i = 0; i < products.length; i++){
-            if(products[i].model === "tablet"){
+            if(products[i].model === "tablet" && products[i].brand === "samsung"){
                 tabletProducts.push(products[i])
             }
         }
@@ -40,11 +40,11 @@ class CustomerTablets extends Component {
 
         //this.props.updateSeller(this.state.seller);
         lowHighProducts.sort(function (x, y) {
-            return x.cheap - y.cheap;
+            return parseInt(x.cheap) - parseInt(y.cheap);
         });
 
         highLowProducts.sort(function (x, y) {
-            return y.expensive - x.expensive;
+            return parseInt(y.expensive) - parseInt(x.expensive);
         });
 
         recentProducts.sort(function (x, y) {
@@ -70,7 +70,7 @@ class CustomerTablets extends Component {
 
         //might need to add a .products to the end of fetch
         for(var i = 0; i < products.length; i++){
-            if((products[i].name.inludes(searchBar) || products[i].brand.inludes(searchBar)) && products[i].model === "tablet"){
+            if(products[i].name.inludes(searchBar) && products[i].brand === "samsung" && products[i].model === "tablet"){
                 searchedProducts.push(products[i])
             }
         }
@@ -81,11 +81,11 @@ class CustomerTablets extends Component {
 
         //this.props.updateSeller(this.state.seller);
         lowHighProducts.sort(function (x, y) {
-            return x.cheap - y.cheap;
+            return parseInt(x.cheap) - parseInt(y.cheap);
         });
 
         highLowProducts.sort(function (x, y) {
-            return y.expensive - x.expensive;
+            return parseInt(y.expensive) - parseInt(x.expensive);
         });
 
         recentProducts.sort(function (x, y) {
@@ -153,38 +153,38 @@ class CustomerTablets extends Component {
         )
 
         const productTablet = (
-            <div>
-              <div className="col-lg-12 table-responsive">
+          <div>
+            <div className="col-lg-12 table-responsive">
 
-                <table className="table table-striped">
-                  <thead>
-                    <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">Price Range</th>
-                      <th scope="col">Number of Sellers</th>
-                      <th scope="col"></th>
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price Range</th>
+                    <th scope="col">Number of Sellers</th>
+                    <th scope="col"></th>
 
+                  </tr>
+                </thead>
+                <tbody>
+    
+                {
+                  tabletProducts.map((product,index) =>
+                    <tr key={index}>
+                      <td>{product.name}</td>
+                      <td>{product.cheap + " - " + product.expensive}</td>
+                      <td>{product.sellers.length}</td>
+                      <td> 
+                          <i className="fa fa-edit btn btn-info" onClick={() => this.viewProduct(product)}> </i>   &nbsp;
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-      
-                  {
-                    tabletProducts.map((product,index) =>
-                      <tr key={index}>
-                        <td>{product.name}</td>
-                        <td>{product.cheap + " - " + product.expensive}</td>
-                        <td>{product.sellers.length}</td>
-                        <td> 
-                            <i className="fa fa-edit btn btn-info" onClick={() => this.viewProduct(product)}> </i>   &nbsp;
-                        </td>
-                      </tr>
-                    )
-                  }
-                
-                  </tbody>
-                </table>
-              </div>
+                  )
+                }
+              
+                </tbody>
+              </table>
             </div>
+          </div>
         )
 
         const productLowHigh = (
@@ -350,4 +350,4 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Customer);*/
-export default (CustomerTablets)
+export default (CustomerTabletSamsung)

@@ -26,3 +26,56 @@ export const getProduct = (searchValue) => dispach => {
         });
     });
 }
+
+export const getCustomer = (customerId) => {
+    return (dispatch) => {
+        var customers = fetch(API_URL + 'customers/')
+        for(var i = 0; i < customers.length; i++){
+            if(customers[i]._id == customerId){
+                return(customers[i]);
+            }
+        }
+    }
+}
+
+export const updateCustomerFavorite = (product, customerId) => {
+    var allCustomers = fetch(API_URL + 'customers');
+    var customer;
+
+    for(var i = 0; i < allCustomers.length; i++){
+        if(allCustomers[i]._id === customerId){
+            customer = allCustomers[i];
+            i = allCustomers.length + 1;
+        }
+    }
+
+    customer.favorites.push({"name" : product.name, "link" : product.link});
+    console.log("update customer ", customer);
+    return (dispatch) => {
+        return axios.put(API_URL + 'customers/', customer)
+            .then((res) => {
+                console.log("response ", res);
+            });
+    }
+}
+
+export const updateCustomerRecent = (product, customerId) => {
+    var allCustomers = fetch(API_URL + 'customers');
+    var customer;
+
+    for(var i = 0; i < allCustomers.length; i++){
+        if(allCustomers[i]._id === customerId){
+            customer = allCustomers[i];
+            i = allCustomers.length + 1;
+        }
+    }
+
+    customer.recents.push(product.link);
+    console.log("update customer ", customer);
+    return (dispatch) => {
+        return axios.put(API_URL + 'customers/' + customerId, customer)
+            .then((res) => {
+                console.log("response ", res);
+            });
+    }
+}

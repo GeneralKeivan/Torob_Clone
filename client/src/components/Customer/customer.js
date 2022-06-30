@@ -6,8 +6,14 @@ import {connect } from 'react-redux';
 import history from "../../history"
 const API_URL = 'http://localhost:3001/api/';
 
+
 var products;
 var searchedProducts = [];
+var lowHighProducts = [];
+var highLowProducts = [];
+var recentProducts = [];
+var id = window.location.href.split('/')[4];
+var url = 'accounts/customers/' + id;
 var sortType = "none"
 class Customer extends Component {
 
@@ -22,9 +28,9 @@ class Customer extends Component {
         products = fetch(API_URL + 'products');
     }
     viewProduct = (viewProductDetail) => {
-        var id = window.location.href.split('/')[4];
+        
         console.log("this.state ", viewProductDetail);
-        history.push('/customers/' + url + "/product/" + viewProductDetail._id, {'product' : viewProductDetail})
+        history.push('accounts/customers/' + id + "/product/" + viewProductDetail._id, {'product' : viewProductDetail})
     }
 
 
@@ -42,11 +48,27 @@ class Customer extends Component {
                 searchedProducts.push(products[i])
             }
         }
+        lowHighProducts = searchedProducts;
+        highLowProducts = searchedProducts;
+        recentProducts  = searchedProducts;
 
         //this.props.updateSeller(this.state.seller);
-    
-    
+        lowHighProducts.sort(function (x, y) {
+            return x.cheap - y.cheap;
+        });
+
+        highLowProducts.sort(function (x, y) {
+            return y.expensive - x.expensive;
+        });
+
+        recentProducts.sort(function (x, y) {
+            let a = new Date(x.last_updated)
+            let b = new Date(y.last_updated)
+            return b - a
+        });
+
     }
+    
     /*componentDidMount() {
         var customerId = window.location.href.split('/')[4];
         this.props.getCustomer(customerId);
@@ -206,11 +228,13 @@ class Customer extends Component {
         return (
             <div>
                 <div>
+                    <Link to={url} ><button className="btn btn-primary pull-left" >Main Page</button></Link>
                     <Link to={url + '/product/mobiles'} ><button className="btn btn-primary pull-left" >Mobiles</button></Link>
                     <Link to={url + '/product/tablets'} ><button className="btn btn-primary pull-left" >Tablets</button></Link>
                     <Link to={url + '/product/laptops'} ><button className="btn btn-primary pull-left" >Laptops</button></Link>
-                    <Link to={url + '/product/favorites'} ><button className="btn btn-primary pull-left" >Favorites</button></Link>
-                    <Link to={url + '/product/recents'} ><button className="btn btn-primary pull-left" >Recents</button></Link>
+                    <Link to={url + '/favorites'} ><button className="btn btn-primary pull-left" >Favorites</button></Link>
+                    <Link to={url + '/recents'} ><button className="btn btn-primary pull-left" >Recents</button></Link>
+                    <Link to={'/accounts/'} ><button className="btn btn-primary pull-left" >Sign Out</button></Link>
                 </div>
                 <div>
                     <button onclick="this.sort('low')">Lowest to Highest</button>

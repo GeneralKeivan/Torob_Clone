@@ -6,15 +6,16 @@ const controller = new accountController();
 
 
 
-router.get('/accounts/admins',controller.getAdmins);
-router.get('/accounts/customers',controller.getCustomers);
-router.get('/accounts/sellers',controller.getSellers);
+router.get('/admins',controller.getAdmins);
+router.get('/customers',controller.getCustomers);
+router.get('/sellers',controller.getSellers);
 router.get('/accounts/',controller.getAccounts);
 
-router.post('/accounts/customers',controller.addCustomers);
-router.post('/accounts/sellers',controller.addSellers);
+router.post('/customers',controller.addCustomers);
+router.post('/sellers',controller.addSellers);
 
-
+router.put('/customers/:id', controller.updateCustomer)
+router.put('/sellers/:id', controller.updateSeller)
 module.exports = router;
 
 

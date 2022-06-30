@@ -27,6 +27,9 @@ let sellerSchema = new Schema({
             ]
         }
     ],
+    reviews : [
+        {type:String, default : null}
+    ],
 },{timestamps : true});
 
 const seller = mongoose.model('seller', sellerSchema);

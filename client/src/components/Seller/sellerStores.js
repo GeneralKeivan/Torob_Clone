@@ -75,7 +75,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    getSeller: (SellerId) => dispatch(getSeller(sellerId)),
+    getSeller: (sellerId) => dispatch(getSeller(sellerId)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SellerStores);

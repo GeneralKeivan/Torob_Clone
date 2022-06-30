@@ -60,3 +60,30 @@ Account.prototype.addSeller = (req,res) => {
     })
 }
 
+
+Account.prototype.updateSeller = (req,res) => {
+    let id = req.body._id;
+    sellerModel.findByIdAndUpdate(id,{ userName : req.body.userName, email : req.body.email, phone : req.body.phone, stores : req.body.stores, reviews : req.body.reviews},(err,result) => {
+        if(err){
+            res.send(err);
+        }else{
+            res.send(result);
+        }
+    })
+}
+
+Account.prototype.updateCustomer = (req,res) => {
+    let id = req.body._id;
+    
+    while(req.body.favorites.length > 5){
+        req.body.favorites.shift();
+    }
+
+    customerModel.findByIdAndUpdate(id,{ favorites : req.body.favorites, recents : req.body.recents},(err,result) => {
+        if(err){
+            res.send(err);
+        }else{
+            res.send(result);
+        }
+    })
+}

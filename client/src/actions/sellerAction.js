@@ -32,9 +32,9 @@ export const addStore = (seller) => {
 export const getSeller = (sellerId) => {
     return (dispatch) => {
         var sellers = fetch(API_URL + 'sellers/')
-        for(var i = 0; i < sellers.sellers.length; i++){
-            if(sellers.sellers[i]._id == sellerId){
-                return(sellers.sellers[i]);
+        for(var i = 0; i < sellers.length; i++){
+            if(sellers[i]._id == sellerId){
+                return(sellers[i]);
             }
         }
     }
