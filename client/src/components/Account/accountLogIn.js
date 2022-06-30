@@ -31,8 +31,9 @@ class LogIn extends React.Component {
     console.log("this.state ", this.state)
     console.log("this.props ", this.props)
 
-    var userName = document.forms["myForm"]["userName"].value;
-    var password = document.forms["myForm"]["password"].value;
+    var myForm = document.forms.myForm;
+    var userName = myForm.userName.value;
+    var password = myForm.password.value;
 
     this.state.account.email = userName;
     this.state.account.userName = userName;
@@ -49,7 +50,7 @@ class LogIn extends React.Component {
           <h2>Log In</h2>
           <div></div>
           {
-            <form onSubmit={this.handleUpdate}>
+            <form name="myForm" onSubmit={this.handleUpdate}>
                 <div className="form-group">
                     <label htmlFor="username">Enter Username or Email</label>
                     <input

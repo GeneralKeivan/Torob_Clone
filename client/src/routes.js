@@ -45,8 +45,8 @@ const routing = () =>(
         <Route exact path="/accounts/admin/:id" component={Admins} /> 
 
 
-        <Route exact path="/accounts/customers/:id/product" component={Customers} /> 
-        <Route exact path="/accounts/customers/:id/product?q=react" component={CustomerSearch} /> 
+        <Route exact path="/accounts/customers/:id" component={Customers} /> 
+        
 
         <Route exact path="/accounts/customers/:id/product/mobiles" component={CustomerMobiles} /> 
         <Route exact path="/accounts/customers/:id/product/tablets" component={CustomerTablets} /> 
@@ -71,6 +71,8 @@ const routing = () =>(
     </div>
 )
 export default routing;
+
+//removed <Route exact path="/accounts/customers/:id/product?q=react" component={CustomerSearch} /> 
 
 //We need to add routes for the following will add more
 //when i realize we need more routes

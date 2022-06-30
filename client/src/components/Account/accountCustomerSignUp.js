@@ -33,9 +33,11 @@ class CustomerSignUp extends React.Component {
     console.log("this.state ", this.state)
     console.log("this.props ", this.props)
 
-    var userName = document.forms["myForm"]["userName"].value;
-    var email = document.forms["myForm"]["email"].value;
-    var password = document.forms["myForm"]["password"].value;
+    var myForm = document.forms.myForm;
+
+    var userName = myForm.userName.value;
+    var email = myForm.email.value;
+    var password = myForm.password.value;
 
     var emailCheck = validateEmail(email);
     var userCheck = validateUser(userName, email);
@@ -59,7 +61,7 @@ class CustomerSignUp extends React.Component {
           <h2>Sign Up</h2>
           <div></div>
           {
-            <form onSubmit={this.handleUpdate}>
+            <form name="myForm" onSubmit={this.handleUpdate}>
                 <div className="form-group">
                     <label htmlFor="username">Enter Username</label>
                     <input
