@@ -1,4 +1,4 @@
-import {GET_CUSTOMER } from '../constants/ActionTypes';
+import {GET_CUSTOMER, GET_CUSTOMERS } from '../constants/ActionTypes';
 import axios from "axios";
 import history from '../history'
 const API_URL = 'http://localhost:3001/api/';
@@ -67,4 +67,18 @@ export const updateCustomerRecent = (product, customerId) => {
                 console.log("response ", res);
             });
     }
+}
+
+export const getCustomers = () => dispatch => {
+    return fetch(API_URL + 'customers')
+    .then((response) => {
+        return response.json();
+       })
+      .then(result => {
+        console.log("customer actions ", result);
+        dispatch({
+            type: GET_CUSTOMERS,
+            payload: result.customers
+          });
+      });
 }

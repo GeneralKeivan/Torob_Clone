@@ -17,11 +17,17 @@ class Accounts extends Component{
 
         return (
             <div>
-                <Link to={'/accounts/log-in'} ><button className="btn btn-primary pull-left" >Log In</button></Link>
-                <Link to={'/accounts/sign-up'} ><button className="btn btn-success pull-right" >Sign Up</button></Link>
+                <div>
+                    Do you want to sign up or log in?
+                </div>
+                <div>
+                    <Link to={'/accounts/log-in'} ><button className="btn btn-primary pull-left" >Log In</button></Link>
+                    <Link to={'/accounts/sign-up'} ><button className="btn btn-success pull-right" >Sign Up</button></Link>
+                </div>
             </div>
         );
     }
 }
 
-export default (Accounts);
+  
+export default Accounts;

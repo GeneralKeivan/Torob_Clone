@@ -26,47 +26,15 @@ export const getAccounts = () => dispatch => {
 export const validateAccount = (account) => {
     console.log("validate account ", account);
     return (dispatch) => {
-        /*return fetch(API_URL + 'accounts/')
-            .then((res) => {
-                console.log("response ", res);
-                for(var i = 0; i < res.accounts.length; i++){
-                    if(account.userName == res.accounts[i].userName || account.email == res.accounts[i].email){
-                        if(account.password == res.accounts[i].password){
-                            switch(res.accounts[i].type){
-                                case "Admin":
-                                    history.push('/accounts/admins/' + res.accounts[i]._id)
-                                    i = res.accounts.length + 1;
-                                    break;
-                                case "Customer":
-                                    history.push('/accounts/customers/' + res.accounts[i]._id + '/product')
-                                    i = res.accounts.length + 1;
-                                    break;
-                                case "Seller":
-                                    history.push('/accounts/sellers/' + res.accounts[i]._id)
-                                    i = res.accounts.length + 1;
-                                    break;
-                            }
-                            correct = true;
-                        }
-                    }
-                }
-                if(!correct){
-                    history.push('/accounts/log-in');
-                }
-            })
-            .then(result => {
-                console.log("account actions ", result);
-                dispatch({
-                    type: VALIDATE_ACCOUNT,
-                    payload: result.accounts
-                });
-            });*/
         var c = fetch(API_URL + '/customers');
         var s = fetch(API_URL + '/sellers');
-        var a = fetch(API_URL + '/admins');
+
+        console.log("customers: ", c)
+        console.log("sellers: ", s)
+        //var a = fetch(API_URL + '/admins');
         var correct = "non";
 
-        for(var i = 0; i < a.admins.length; i++){
+        /*for(var i = 0; i < a.admins.length; i++){
             if(account.userName === a.admins[i].userName || account.email === a.admins[i].email){
                 if(account.password === a.admins[i].password){
                     history.push('/accounts/admin/' + a.admins[i]._id)
@@ -74,7 +42,7 @@ export const validateAccount = (account) => {
                     correct = "admin";
                 }
             }
-        }
+        }*/
 
         for(var i = 0; i < c.customers.length; i++){
             if(account.userName === c.customers[i].userName || account.email === c.customers[i].email){
@@ -86,7 +54,7 @@ export const validateAccount = (account) => {
             }
         }
 
-        for(var i = 0; i < a.admins.length; i++){
+        for(var i = 0; i < s.sellers.length; i++){
             if(account.userName === s.sellers[i].userName || account.email === s.sellers[i].email){
                 if(account.password === s.sellers[i].password){
                     history.push('/accounts/seller/' + s.sellers[i]._id)
@@ -96,7 +64,7 @@ export const validateAccount = (account) => {
             }
         }
 
-        if(correct === "admin"){
+        /*if(correct === "admin"){
             history.push('/accounts/admins');
             return(fetch(API_URL + '/admins'))
             .then(result => {
@@ -106,8 +74,8 @@ export const validateAccount = (account) => {
                     payload: result.accounts
                 });
             });
-        }
-        else if(correct === 'customer'){
+        }*/
+        if(correct === 'customer'){
             history.push('/accounts/customers');
             return(fetch(API_URL + '/customers'))
             .then(result => {

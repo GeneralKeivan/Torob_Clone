@@ -1,5 +1,7 @@
 import React from 'react';
 import { addCustomer } from '../../actions/accountAction';
+import { getCustomers } from '../../actions/customerAction';
+import { getSellers } from '../../actions/sellerAction'
 import {connect } from 'react-redux';
 import history from '../../history'
 import PropTypes from 'prop-types'
@@ -7,26 +9,33 @@ import axios from "axios"
 import { string } from 'prop-types';
 
 //This code is for updating student id
+var account = {
+  userName: "",
+  password: "",
+  email: ""
+}
+
+var customers, sellers;
 
 class CustomerSignUp extends React.Component {
   constructor(props){
       super(props);
-      const location = history.location
-      this.state = location.state;
       this.handleUpdate = this.handleUpdate.bind(this);
   }
 
-  static propTypes = {
-    addCustomer: PropTypes.func.isRequired,
+  componentDidMount() {
+    this.props.getCustomers();
+    this.props.getSellers();
   }
 
-  handleChangeFor = (propertyName) => (event) => {
-    const { account } = this.state;
-    const logInDetails = {
-      ...account,
-      [propertyName]: event.target.value
-    };
-    this.setState({ account: logInDetails });
+
+
+  static propTypes = {
+    addCustomer: PropTypes.func.isRequired,
+    getCustomers: PropTypes.func.isRequired,
+    customers: PropTypes.object.isRequired,
+    getSellers: PropTypes.func.isRequired,
+    sellers: PropTypes.object.isRequired
   }
 
   handleUpdate(event) {
@@ -34,28 +43,44 @@ class CustomerSignUp extends React.Component {
     console.log("this.state ", this.state)
     console.log("this.props ", this.props)
 
-    var myForm = document.forms.myForm;
+    var myForm = document.forms["myForm"]
 
-    var userName = myForm.userName.value;
-    var email = myForm.email.value;
-    var password = myForm.password.value;
+    var userName = myForm["username"].value;
+    var email = myForm["email"].value;
+    var password = myForm["password"].value;
 
     var emailCheck = validateEmail(email);
     var userCheck = validateUser(userName, email);
     var passwordCheck = validatePassword(password);
 
-    if(emailCheck && userCheck && passwordCheck){
-        this.state.account.userName = userName;
-        this.state.account.email = email;
-        this.state.account.password = password;
-        this.state.account.type = "customer";
+    if(!emailCheck){
+      window.alert("Incorrect email format");
+    }
 
-        this.props.addCustomer(this.state.account);
+
+    if(emailCheck && userCheck && passwordCheck){
+        account.userName = userName;
+        account.email = email;
+        account.password = password;
+        account.type = "customer";
+
+        this.props.addCustomer(account);
+    }
+  }
+
+  showPassword() {
+    var x = document.getElementById("password");
+    if (x.type === "password") {
+        x.type = "text";    
+    } else {
+        x.type = "password";
     }
   }
 
 
   render(){
+    customers = this.props.customers;
+    sellers = this.props.sellers;
 
     return(
       <div className="logInDetail">
@@ -94,7 +119,8 @@ class CustomerSignUp extends React.Component {
                     name="password"
                     autoComplete="off"
                     />
-                    <input type="checkbox" onclick="showPassword()">Show Password</input>
+                    <label htmlFor="showPassword">Show Password</label>
+                    <input type="checkbox" name="showPassword" onClick={()=>this.showPassword()}></input>
                 </div>
 
               <button type="submit" className="btn btn-success btn-lg">
@@ -109,35 +135,40 @@ class CustomerSignUp extends React.Component {
   }
 }
 
-function showPassword() {
-    var x = document.getElementById("password");
-    if (x.type === "password") {
-        x.type = "text";    
-    } else {
-        x.type = "password";
-    }
-}
+
 
 //this is honestly a horrible way to do this and probably leads to lots of leaks
 //but at the moment i cant think of another way
 const validateUser = (userName, email) => {
     const API_URL = 'http://localhost:3001/api/';
-    var a = fetch(API_URL + 'customers/')
-    var b = fetch(API_URL + 'sellers/')
-    var c = fetch(API_URL + 'admins/')
-    console.log("a = ", a);
-    console.log("b = ", b);
-    console.log("c = ", c);
-    for(var i = 0; i < a.accounts.length; i++){
-        if(email === a.customers[i].email || email === b.sellers[i].email || email === c.admins[i].email){
+
+    var b = sellers.sellers;
+    var a = customers.customers;
+
+    console.log("a = ", customers);
+    console.log("b = ", sellers);
+
+    for(var i = 0; i < a.length ; i++){
+        if(email === a[i].email){
             window.alert("A user with the same Email already exists");
             return false;
         }
-        if(userName === a.customers[i].userName || userName === b.sellers[i].userName || userName === a.admins[i].userName){
+        if(userName === a[i].userName){
             window.alert("A user with the same Username already exists");
             return false;
         }
     }
+
+    for(var i = 0; i < b.length ; i++){
+      if(email === b[i].email){
+          window.alert("A user with the same Email already exists");
+          return false;
+      }
+      if(userName === b[i].userName){
+          window.alert("A user with the same Username already exists");
+          return false;
+      }
+  }
 
     return true;
 }
@@ -157,11 +188,13 @@ const validatePassword = (password) => {
         return false;
     }
 
-    var upper = String(password).toLowerCase();
-    if(String(password) === upper){
+    var upper = String(password).toUpperCase();
+    var lower = String(password).toLowerCase();
+    if(String(password) === upper || String(password) === lower){
         window.alert("Password needs to have atleast one Uppercase letter and one Lowercase letter");
         return false;
     }
+
     if(! /[0-9]/.test(String(password))){
         window.alert("Password needs to have atleast one number");
         return false;
@@ -172,11 +205,14 @@ const validatePassword = (password) => {
 
 const mapStateToProps = (state) => {
     return {
-      accounts: state.accounts
+      customers: state.customers,
+      sellers: state.sellers
     }
   }
   const mapDispatchToProps = (dispatch) => {
     return {
+        getCustomers: () => dispatch(getCustomers()),
+        getSellers: () => dispatch(getSellers()),
         addCustomer: (account) => dispatch(addCustomer(account)),
     }
   }

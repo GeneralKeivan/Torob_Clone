@@ -43,7 +43,7 @@ export const getSellers = () => dispatch => {
             payload: result.sellers
           });
       });
-    }
+}
 
 //Most probably wrong
 /*export const getSeller = (sellerId) => {

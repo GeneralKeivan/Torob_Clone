@@ -47,12 +47,11 @@ const routing = () =>(
     <div>
     <Switch>
     <Route exact path="/" component={Home} label="Home"/>
-
-        <Route exact path="/accounts/" components={Accounts} />
-        <Route exact path="/accounts/sign-up" components={AccountType} />
-        <Route exact path="/accounts/sign-up/customer" components={CustomerSignUp} />
-        <Route exact path="/accounts/sign-up/seller" components={SellerSignUp} />
-        <Route exact path="/accounts/log-in" components={LogIn} />
+        <Route exact path="/accounts/" render = {props => <Accounts {...props}/>} />
+        <Route exact path="/accounts/sign-up" render = {props => <AccountType {...props}/>} />
+        <Route exact path="/accounts/sign-up/customer" component={CustomerSignUp} />
+        <Route exact path="/accounts/sign-up/seller" component={SellerSignUp} />
+        <Route exact path="/accounts/log-in" component={LogIn} />
 
         <Route exact path="/accounts/admin/:id" component={Admins} /> 
 

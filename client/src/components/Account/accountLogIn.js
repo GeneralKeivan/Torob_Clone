@@ -1,5 +1,5 @@
 import React from 'react';
-import { validateAccount } from '../../actions/accountAction';
+import { getAccounts, validateAccount } from '../../actions/accountAction';
 import {connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import history from '../../history'
@@ -16,15 +16,7 @@ class LogIn extends React.Component {
 
   static propTypes = {
     validateAccount: PropTypes.func.isRequired,
-  }
-
-  handleChangeFor = (propertyName) => (event) => {
-    const { account } = this.state;
-    const logInDetails = {
-      ...account,
-      [propertyName]: event.target.value
-    };
-    this.setState({ account: logInDetails });
+    account: PropTypes.func.isRequired
   }
 
   handleUpdate(event) {
@@ -32,15 +24,31 @@ class LogIn extends React.Component {
     console.log("this.state ", this.state)
     console.log("this.props ", this.props)
 
-    var myForm = document.forms.myForm;
-    var userName = myForm.userName.value;
-    var password = myForm.password.value;
+    var myForm = document.forms["myForm"];
 
-    this.state.account.email = userName;
-    this.state.account.userName = userName;
-    this.state.account.password = password;
+    var userName = myForm["username"].value;
+    var password = myForm["password"].value;
 
-    this.props.validateAccount(this.state.account);
+
+  var account = {
+    userName: "",
+    password: "",
+    email: ""
+  }
+    account.email = userName;
+    account.userName = userName;
+    account.password = password;
+
+    this.props.validateAccount(account);
+  }
+
+  showPassword() {
+    var x = document.getElementById("password");
+    if (x.type === "password") {
+        x.type = "text";    
+    } else {
+        x.type = "password";
+    }
   }
 
 
@@ -72,7 +80,9 @@ class LogIn extends React.Component {
                     name="password"
                     autoComplete="off"
                     />
-                    <input type="checkbox" onclick="showPassword()">Show Password</input>
+                    <label htmlFor="showPassword">Show Password</label>
+                    <input type="checkbox" name="showPassword" onClick={()=>this.showPassword()}></input>
+                    
                 </div>
 
               <button type="submit" className="btn btn-success btn-lg">
@@ -87,18 +97,11 @@ class LogIn extends React.Component {
   }
 }
 
-function showPassword() {
-    var x = document.getElementById("password");
-    if (x.type === "password") {
-        x.type = "text";    
-    } else {
-        x.type = "password";
-    }
-}
+
 
 const mapStateToProps = (state) => {
     return {
-      accounts: state.accounts
+      //account: state.accounts
     }
   }
   const mapDispatchToProps = (dispatch) => {

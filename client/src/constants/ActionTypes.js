@@ -9,6 +9,8 @@ export const ADD_ACCOUNT = "ADD_ACCOUNT"
 export const ADD_PRODUCT = "ADD_PRODUCT"
 export const GET_PRODUCTS = "GET_PRODUCTS"
 
+export const GET_CUSTOMERS = "GET_CUSTOMERS"
+
 export const GET_SELLER = "GET_SELLER"
 export const GET_CUSTOMER = "GET_CUSTOMER"
 export const GET_PRODUCT = "GET_PRODUCT"
