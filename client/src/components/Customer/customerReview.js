@@ -6,6 +6,8 @@ const API_URL = 'http://localhost:3001/api/';
 
 var sellerId = window.location.href.split('/')[6];
 var customerId = window.location.href.split('/')[4];
+var reviewType = "Non"
+var radioButtons;
 class CustomerReview extends React.Component {
     constructor(props){
         super(props);
@@ -19,7 +21,7 @@ handleUpdate(event) {
     console.log("this.state ", this.state)
     console.log("this.props ", this.props)
 
-    var review = document.getElementById("review").value;
+    var reviewText = document.getElementById("review").value;
 
     var sellers = fetch(API_URL + 'sellers');
     var seller;
@@ -41,9 +43,16 @@ handleUpdate(event) {
         }
     }
 
-    review = customer.userName + " : " + review;
+    let reviewType;
+    for (const radioButton of radioButtons) {
+        if (radioButton.checked) {
+            reviewType = radioButton.value;
+            break;
+        }
+    }
 
-    seller.reviews.push(review);
+
+    seller.reviews.push({name: customer.userName, text: reviewText, type: reviewType});
 
     this.props.updateSeller(seller);
 }
@@ -51,28 +60,44 @@ handleUpdate(event) {
 //MAKE IT HAVE TWO OPTIONS?
   render(){
 
+    const reviewBox = (
+      <form onSubmit={this.handleUpdate}>
+      <div className="form-group">
+        <label htmlFor="review">Type your review here</label>
+          <textarea
+              id="review"
+              className="review"
+              placeholder="Your Review..."
+          />
+      </div>
+      <button type="submit" className="btn btn-success btn-lg">
+        Send
+      </button>
+     </form>
+    );
+
+    radioButtons = document.querySelectorAll('input[name="type"]');
     return(
         <div className="customerReview">
             <h2>Customer Review</h2>
-                <div>
-                </div>
-            {
-                <form onSubmit={this.handleUpdate}>
-                <div className="form-group">
-                  <label htmlFor="review">Type your review here</label>
-                    <textarea
-                        id="review"
-                        className="review"
-                        placeholder="Your Review..."
-                    />
-                </div>
-                <button type="submit" className="btn btn-success btn-lg">
-                  Send
-                </button>
-               </form>
+            <div>
+              <input type="radio" name="type" value="Report" id="report" />
+              <label for="report">Report</label>
 
-              }
+              <input type="radio" name="type" value="WrongPrice" id="wrongPrice" />
+              <label for="wrongPrice">Wrong price</label>
+
+              <input type="radio" name="type" value="Other" id="other" />
+              <label for="other">Other</label>
+            </div>
             
+            <div className="row">
+            <div className="col-lg-12 text-center">
+            {
+              radioButtons.checked ?  productList: 'Choose a review type'
+            }
+            </div>
+          </div>
         </div>
     );
   }

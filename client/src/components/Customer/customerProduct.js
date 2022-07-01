@@ -41,6 +41,17 @@ class CustomerProduct extends Component {
         const  productList = (
             <div>
                 <div>
+                    {
+                    products.map((product,index) =>
+                        <div>
+                            <div>Name : {product.name}</div>
+                            <div>Size : {product.size}</div>
+                            <div>Weight : {product.weight}</div>
+                            <div>Battery Power : {product.battery}</div>
+                            <div>Screen Type : {product.screen}</div>
+                        </div>
+                    )
+                    }
                     <i className="fa fa-edit btn btn-info" onClick={() => this.favoriteProduct()}>Favorite</i>
                 </div>
                 <div className="col-lg-12 table-responsive">

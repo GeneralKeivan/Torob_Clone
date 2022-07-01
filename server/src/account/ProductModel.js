@@ -20,6 +20,10 @@ let productSchema = new Schema({
             link:  {type:String, default : null}
         }
     ],
+    size : {type:String, default : null},
+    weight: {type:String, default : null},
+    battery: {type:String, default : null},
+    screen:  {type:String, default : null}
 },{timestamps : true});
 
 const product = mongoose.model('product', productSchema);

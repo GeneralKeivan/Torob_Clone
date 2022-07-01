@@ -28,7 +28,11 @@ let sellerSchema = new Schema({
         }
     ],
     reviews : [
-        {type:String, default : null}
+        {
+            name : {type:String, default : null},
+            text : {type:String, default : null},
+            type : {type:String, default : null},
+        }
     ],
 },{timestamps : true});
 
