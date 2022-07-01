@@ -2,14 +2,15 @@ import {ADD_PRODUCT, GET_PRODUCTS, GET_PRODUCT} from '../constants/ActionTypes'
 import axios from "axios";
 import history from '../history'
 import { resetWarningCache } from 'prop-types';
+const API_URL = 'http://localhost:3001/api/';
 
 export const getProducts = () => dispatch => {
-    return fetch(API_URL + 'products/')
+    return fetch(API_URL + 'products')
     .then((response) => {
         return response.json();
        })
       .then(result => {
-        console.log("seller actions ", result);
+        console.log("products actions ", result);
         dispatch({
             type: GET_PRODUCTS,
             payload: result.products
@@ -42,7 +43,7 @@ export const updateProduct = (product, sellerId, storeId) => {
     }
 }
 
-export const getProduct = (searchValue) => dispach => {
+export const getProduct = (searchValue) => dispatch => {
     
     var allProducts = fetch(API_URL + 'products');
     var products = [];

@@ -11,5 +11,6 @@ export const GET_PRODUCTS = "GET_PRODUCTS"
 
 export const GET_SELLER = "GET_SELLER"
 export const GET_CUSTOMER = "GET_CUSTOMER"
+export const GET_PRODUCT = "GET_PRODUCT"
 // need to add all the actions as they appear
 // use the same format as the one given

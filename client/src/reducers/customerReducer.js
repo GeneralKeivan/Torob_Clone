@@ -1,4 +1,4 @@
-import {GET_CUSTOMER} from '../constants/ActionTypes'
+import {GET_CUSTOMER, ADD_CUSTOMER} from '../constants/ActionTypes'
 const initialState = {
     customers : [],
     customer : {}
@@ -12,6 +12,10 @@ const customerReducer = (state = initialState, action) => {
                 customer : {
                     isSingleCustomerView : false
                 }
+            }
+        case ADD_CUSTOMER:
+            return{
+                
             }
     }
 }

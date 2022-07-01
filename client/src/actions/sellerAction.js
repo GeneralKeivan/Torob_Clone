@@ -1,4 +1,4 @@
-import {GET_SELLER} from '../constants/ActionTypes'
+import {GET_SELLERS} from '../constants/ActionTypes'
 import axios from "axios";
 import history from '../history'
 import { resetWarningCache } from 'prop-types';
@@ -6,6 +6,8 @@ import { resetWarningCache } from 'prop-types';
 const API_URL = 'http://localhost:3001/api/';
 
 //Need to change this when visuals are up
+
+
 
 export const updateSeller = (seller) => {
     console.log("udpate seller ", seller);
@@ -29,6 +31,19 @@ export const addStore = (seller) => {
     }
 }
 
+export const getSellers = () => dispatch => {
+    return fetch(API_URL + 'sellers')
+    .then((response) => {
+        return response.json();
+       })
+      .then(result => {
+        console.log("sellers actions ", result);
+        dispatch({
+            type: GET_SELLERS,
+            payload: result.sellers
+          });
+      });
+    }
 
 //Most probably wrong
 /*export const getSeller = (sellerId) => {

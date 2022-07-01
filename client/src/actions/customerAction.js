@@ -6,6 +6,7 @@ const API_URL = 'http://localhost:3001/api/';
 
 
 //Most probably wrong
+//CHECK THIS ONE
 export const getCustomer = (customerId) => {
     return (dispatch) => {
         return fetch(API_URL + 'customers/')

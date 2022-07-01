@@ -1,5 +1,6 @@
 import React from 'react';
-import { getSellers, updateSeller, createProduct, getProducts, updateProduct } from '../../actions/sellerAction';
+import { getSellers, updateSeller} from '../../actions/sellerAction';
+import { createProduct, getProducts, updateProduct} from '../../actions/productAction';
 import {connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import history from '../../history'
