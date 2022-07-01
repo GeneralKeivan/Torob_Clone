@@ -1,20 +1,20 @@
 import sellerModel  from "./sellerModel";
 import customerModel from "./customerModel"
-import adminModel from "./adminModel"
-import producrModel from "./productModel"
+//import adminModel from "./adminModel"
+import productModel from "./productModel"
 class Account {
 
 } 
 
 Account.prototype.getAccounts = (req,res) => {
     var allAccounts;
-    adminModel.find({},(err,accounts) => {
+    /*adminModel.find({},(err,accounts) => {
         if(err){
             res.send(err);
         }else{
             allAccounts += accounts;
         }
-    })
+    })*/
 
     customerModel.find({},(err,accounts) => {
         if(err){
@@ -136,5 +136,28 @@ Account.prototype.updateProduct = (req, res) => {
         }
     })
 }
+
+Account.prototype.getCustomers = (req,res) => {
+    customerModel.find({},(err,customers) => {
+        if(err){
+            res.send(err);
+        }else{
+            console.log("result customers", customers);
+            res.send({'success':true,'message':'Customers fetched successfully',customers});
+        }
+    })
+}
+
+Account.prototype.getSellers = (req,res) => {
+    sellerModel.find({},(err,sellers) => {
+        if(err){
+            res.send(err);
+        }else{
+            console.log("result sellers", sellers);
+            res.send({'success':true,'message':'Seller fetched successfully',sellers});
+        }
+    })
+}
+
 
 module.exports = Account;

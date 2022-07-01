@@ -7,8 +7,9 @@ const controller = new accountController();
 
 
 //router.get('/admins',controller.getAdmins);
-router.get('/',controller.getAccounts);
-
+router.get('/', controller.getProducts);
+router.post('/', controller.addProduct);
+router.put('/:id', controller.updateProduct);
 module.exports = router;
 
 
