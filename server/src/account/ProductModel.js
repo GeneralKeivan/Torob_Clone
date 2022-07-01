@@ -14,6 +14,7 @@ let productSchema = new Schema({
     expensive: {type:String, default : null},
     sellers    : [
         {
+            id  : {type:String, default : null},
             name : {type:String, default : null},
             phone: {type:String, default : null},
             price: {type:String, default : null},

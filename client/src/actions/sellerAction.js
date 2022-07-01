@@ -1,4 +1,4 @@
-import {GET_SELLER, GET_SELLER} from '../constants/ActionTypes'
+import {GET_SELLER, ADD_PRODUCT, GET_PRODUCTS} from '../constants/ActionTypes'
 import axios from "axios";
 import history from '../history'
 import { resetWarningCache } from 'prop-types';
@@ -38,5 +38,32 @@ export const getSeller = (sellerId) => {
             }
         }
     }
+}
+
+export const getProducts = () => dispatch => {
+    return fetch(API_URL + 'products/')
+    .then((response) => {
+        return response.json();
+       })
+      .then(result => {
+        console.log("seller actions ", result);
+        dispatch({
+            type: GET_PRODUCTS,
+            payload: result.products
+          });
+      });
+}
+
+export const createProduct = (product, sellerId, storeId) => {
+    console.log("product ", product);
+        return (dispatch) => {
+            return axios.post(API_URL + 'products/', product)
+                .then((res) => {
+                    console.log("response ", res);
+                    dispatch({ type: ADD_PRODUCT, payload : res.data.result })
+                    history.push('accounts/sellers/' + sellerId + '/stores/' + storeId)
+
+                });
+        }
 }
 

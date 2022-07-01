@@ -1,57 +1,101 @@
 import React from 'react';
-import { updateSeller } from '../../actions/sellerAction';
+import { getSeller, updateSeller, createProduct, getProducts } from '../../actions/sellerAction';
 import {connect } from 'react-redux';
 import history from '../../history'
 const API_URL = 'http://localhost:3001/api/';
 
-var sellerId = window.location.href.split('/')[6];
+var sellerId = window.location.href.split('/')[4];
+var seller;
+var storeId = window.location.href.split('/')[6];
+var product = {
+    product : {
+        name : "",
+        id : "",
+        model : "",
+        brand : "",
+        last_updated : "",
+        cheap : "",
+        expensive : "",
+        sellers : [
+            {
+                name : "",
+                phone : "",
+                price : "",
+                link : ""
+            }
+        ],
+        size : "",
+        weight : "",
+        battery : "",
+        screen : ""
+    }
+}
 class SellerStoresNewProduct extends React.Component {
     constructor(props){
         super(props);
 
         this.handleUpdate = this.handleUpdate.bind(this);
     }
+    static propTypes = {
+        getSeller: PropTypes.func.isRequired,
+        getProducts: PropTypes.func.isRequired,
+        createProduct: PropTypes.func.isRequired,
+    }
 
-
+//find correct info for model and brand
 handleUpdate(event) {
     event.preventDefault();
     console.log("this.state ", this.state)
     console.log("this.props ", this.props)
 
-    var reviewText = document.getElementById("review").value;
+    seller = this.getSeller(sellerId);
 
-    var sellers = fetch(API_URL + 'sellers');
-    var seller;
+    product.product.name = document.forms["newForm"]["name"].value;
+    product.product.model = document.forms["newForm"]["MODEL"].value;
+    product.product.brand = document.forms["newForm"]["BRAND"].value;
+    product.product.last_updated = new Date();
+    product.product.size = document.forms["newForm"]["size"].value;
+    product.product.weight = document.forms["newForm"]["weight"].value;
+    product.product.battery = document.forms["newForm"]["battery"].value;
+    product.product.screen = document.forms["newForm"]["screen"].value;
 
-    for(var i = 0; i < sellers.length; i++){
-        if(sellers[i]._id === sellerId){
-            seller = sellers[i];
-            i = seller.length + 1;
-        }
-    }
 
-    var customers = fetch(API_URL + 'customers');
-    var customer;
+    var link = documen.forms["newForm"]["link"].value;
+    var price = parseInt(document.forms["newForm"]["price"].value);
+    product.product.cheap = price;
+    product.product.expensive = price;
+    product.product.sellers.push({id:seller._id ,name:seller.userName, phone:seller.phone, price:price, link:link});
 
-    for(var i = 0; i < customerss.length; i++){
-        if(customers[i]._id === customerId){
-            customer = customers[i];
-            i = customer.length + 1;
-        }
-    }
 
-    let reviewType;
-    for (const radioButton of radioButtons) {
-        if (radioButton.checked) {
-            reviewType = radioButton.value;
+    var storeIndex;
+    for(var i = 0; i < seller.store.length; i++){
+        if(storeId === seller.store[i].id){
+            storeIndex = i;
             break;
         }
     }
 
+    if(isNaN(price)){
+        window.alert("The entered Price must be a number");
+    }
+    else{
+        this.props.createProduct(product.product, sellerId, storeId)
 
-    seller.reviews.push({name: customer.userName, text: reviewText, type: reviewType});
-
-    this.props.updateSeller(seller);
+        var prods = this.props.getProducts()
+        for(var i = 0; i < prods.length; i++){
+            for(var j = 0; j < prods[i].sellers.length; j++){
+                if(prods[i].seller[j].id === seller._id){
+                    prod = prods[i];
+                    i = prods.length + 1;
+                    break;
+                }
+            }
+        }
+        //This might be wrong because of the id
+        seller.store[storeIndex].products.push({id: prod._id,name:product.product.name, model:product.product.model, brand:product.product.brand, price:price, link:link})
+        this.props.updateSeller(seller);
+    }
+ 
 }
 
   render(){
@@ -110,7 +154,7 @@ handleUpdate(event) {
                 <div>
                 </div>
             {
-                <form name="myForm" onSubmit={this.handleUpdate}>
+                <form name="newForm" onSubmit={this.handleUpdate}>
                     <div className="form-group">
                         <label htmlFor="name">Product Name</label>
                         <input
@@ -250,7 +294,10 @@ const mapStateToProps = (state) => {
   }
   const mapDispatchToProps = (dispatch) => {
     return {
-        //updateSeller : seller => dispatch(updateSeller(seller))
+        createProduct: (product, sellerId, storeId) => dispatch(createProduct(product, sellerId, storeId)),
+        getProducts: () => dispatch(getProducts()),
+        getSeller: (SellerId) => dispatch(getSeller(sellerId)),
+        updateSeller : seller => dispatch(updateSeller(seller))
     }
   }
   
