@@ -26,6 +26,8 @@ const productReducer = (state = initialState, action) => {
                 ...state,
                 products : [...state.products,...action.payload]
         }
+        default: // need this for default case
+            return state 
     }
 }
 

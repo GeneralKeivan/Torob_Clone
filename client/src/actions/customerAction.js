@@ -12,7 +12,7 @@ export const getCustomer = (customerId) => {
         return fetch(API_URL + 'customers/')
         .then((response) => {
             for(var i = 0; i < response.length; i++){
-                if(response[i]._id == customerId){
+                if(response[i]._id === customerId){
                     return(response[i]);
                 }
             }

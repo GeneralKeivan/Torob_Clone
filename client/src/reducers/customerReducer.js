@@ -14,9 +14,12 @@ const customerReducer = (state = initialState, action) => {
                 }
             }
         case ADD_CUSTOMER:
-            return{
-                
+            return {
+                ...state,
+                customers : [...state.customers,...action.payload]
             }
+        default: // need this for default case
+            return state 
     }
 }
 

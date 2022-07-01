@@ -116,7 +116,7 @@ const validateUser = (userName, email) => {
   console.log("b = ", b);
   console.log("c = ", c);
   for(var i = 0; i < a.accounts.length; i++){
-      if((email == a.customers[i].email || email == b.sellers[i].email || email == c.admins[i].email) && (email != this.state.sellers.email)){
+      if((email == a.customers[i].email || email == b.sellers[i].email || email == c.admins[i].email) && (email !== this.state.sellers.email)){
           window.alert("A user with the same Email already exists");
           return false;
       }
@@ -138,7 +138,7 @@ const validateEmail = (email) => {
 };
 
 const validatePhone = (phone) => {
-  if(isNaN(parseInt(phone)) && (phone.length != 8 || phone.length != 11)){
+  if(isNaN(parseInt(phone)) && (phone.length !== 8 || phone.length !== 11)){
     window.alert("Phone Number is invalid")
     return false;
   }

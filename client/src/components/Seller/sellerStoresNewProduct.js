@@ -12,6 +12,8 @@ var storeId = window.location.href.split('/')[6];
 var allProducts;
 var selected = false;
 var existingProduct;
+var radioButtons = document.querySelectorAll('input[name="exists"]');
+var modelButtons = document.querySelectorAll('input[name="model"]');
 var product = {
     product : {
         name : "",
@@ -411,8 +413,7 @@ class SellerStoresNewProduct extends React.Component {
         </div>
     );
 
-    var radioButtons = document.querySelectorAll('input[name="exists"]');
-    var modelButtons = document.querySelectorAll('input[name="model"]');
+
     return(
         <div className="customerReview">
             <h2>How do you want to add the product</h2>

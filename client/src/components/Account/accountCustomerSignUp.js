@@ -129,11 +129,11 @@ const validateUser = (userName, email) => {
     console.log("b = ", b);
     console.log("c = ", c);
     for(var i = 0; i < a.accounts.length; i++){
-        if(email == a.customers[i].email || email == b.sellers[i].email || email == c.admins[i].email){
+        if(email === a.customers[i].email || email === b.sellers[i].email || email === c.admins[i].email){
             window.alert("A user with the same Email already exists");
             return false;
         }
-        if(userName == a.customers[i].userName || userName == b.sellers[i].userName || userName == a.admins[i].userName){
+        if(userName === a.customers[i].userName || userName === b.sellers[i].userName || userName === a.admins[i].userName){
             window.alert("A user with the same Username already exists");
             return false;
         }
@@ -158,7 +158,7 @@ const validatePassword = (password) => {
     }
 
     var upper = String(password).toLowerCase();
-    if(String(password) == upper){
+    if(String(password) === upper){
         window.alert("Password needs to have atleast one Uppercase letter and one Lowercase letter");
         return false;
     }

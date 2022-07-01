@@ -67,8 +67,8 @@ export const validateAccount = (account) => {
         var correct = "non";
 
         for(var i = 0; i < a.admins.length; i++){
-            if(account.userName == a.admins[i].userName || account.email == a.admins[i].email){
-                if(account.password == a.admins[i].password){
+            if(account.userName === a.admins[i].userName || account.email === a.admins[i].email){
+                if(account.password === a.admins[i].password){
                     history.push('/accounts/admin/' + a.admins[i]._id)
                     i = a.admins.length + 1;
                     correct = "admin";
@@ -77,8 +77,8 @@ export const validateAccount = (account) => {
         }
 
         for(var i = 0; i < c.customers.length; i++){
-            if(account.userName == c.customers[i].userName || account.email == c.customers[i].email){
-                if(account.password == c.customers[i].password){
+            if(account.userName === c.customers[i].userName || account.email === c.customers[i].email){
+                if(account.password === c.customers[i].password){
                     history.push('/accounts/customer/' + c.customers[i]._id)
                     i = c.customers.length + 1;
                     correct = "customer";
@@ -87,8 +87,8 @@ export const validateAccount = (account) => {
         }
 
         for(var i = 0; i < a.admins.length; i++){
-            if(account.userName == s.sellers[i].userName || account.email == s.sellers[i].email){
-                if(account.password == s.sellers[i].password){
+            if(account.userName === s.sellers[i].userName || account.email === s.sellers[i].email){
+                if(account.password === s.sellers[i].password){
                     history.push('/accounts/seller/' + s.sellers[i]._id)
                     i = s.sellers + 1;
                     correct = "seller";
@@ -96,7 +96,7 @@ export const validateAccount = (account) => {
             }
         }
 
-        if(correct == "admin"){
+        if(correct === "admin"){
             history.push('/accounts/admins');
             return(fetch(API_URL + '/admins'))
             .then(result => {
@@ -107,7 +107,7 @@ export const validateAccount = (account) => {
                 });
             });
         }
-        else if(correct == 'customer'){
+        else if(correct === 'customer'){
             history.push('/accounts/customers');
             return(fetch(API_URL + '/customers'))
             .then(result => {
@@ -118,7 +118,7 @@ export const validateAccount = (account) => {
                 });
             });
         }
-        else if(correct == 'seller'){
+        else if(correct === 'seller'){
             history.push('/accounts/sellers');
             return(fetch(API_URL + '/sellers'))
             .then(result => {

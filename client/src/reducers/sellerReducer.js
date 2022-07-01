@@ -13,6 +13,9 @@ const sellerReducer = (state = initialState, action) => {
                     isSingleSellerView : false
                 }
             }
+        default: // need this for default case
+            return state 
+   
     }
 }
 
