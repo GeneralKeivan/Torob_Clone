@@ -1,5 +1,5 @@
 import React from 'react';
-import { getSeller, updateSeller, createProduct, getProducts } from '../../actions/sellerAction';
+import { getSeller, updateSeller, createProduct, getProducts, updateProduct } from '../../actions/sellerAction';
 import {connect } from 'react-redux';
 import history from '../../history'
 const API_URL = 'http://localhost:3001/api/';
@@ -7,6 +7,9 @@ const API_URL = 'http://localhost:3001/api/';
 var sellerId = window.location.href.split('/')[4];
 var seller;
 var storeId = window.location.href.split('/')[6];
+var allProducts;
+var selected = false;
+var existingProduct;
 var product = {
     product : {
         name : "",
@@ -34,7 +37,8 @@ class SellerStoresNewProduct extends React.Component {
     constructor(props){
         super(props);
 
-        this.handleUpdate = this.handleUpdate.bind(this);
+        this.handleNewUpdate = this.handleNewUpdate.bind(this);
+        this.handleExistUpdate = this.handleExistUpdate.bind(this);
     }
     static propTypes = {
         getSeller: PropTypes.func.isRequired,
@@ -42,61 +46,102 @@ class SellerStoresNewProduct extends React.Component {
         createProduct: PropTypes.func.isRequired,
     }
 
+    componentDidMount(){
+       allProducts = this.props.getProducts()
+    }
 //find correct info for model and brand
-handleUpdate(event) {
-    event.preventDefault();
-    console.log("this.state ", this.state)
-    console.log("this.props ", this.props)
+    handleNewUpdate(event) {
+        event.preventDefault();
+        console.log("this.state ", this.state)
+        console.log("this.props ", this.props)
 
-    seller = this.getSeller(sellerId);
+        seller = this.getSeller(sellerId);
 
-    product.product.name = document.forms["newForm"]["name"].value;
-    product.product.model = document.forms["newForm"]["MODEL"].value;
-    product.product.brand = document.forms["newForm"]["BRAND"].value;
-    product.product.last_updated = new Date();
-    product.product.size = document.forms["newForm"]["size"].value;
-    product.product.weight = document.forms["newForm"]["weight"].value;
-    product.product.battery = document.forms["newForm"]["battery"].value;
-    product.product.screen = document.forms["newForm"]["screen"].value;
-
-
-    var link = documen.forms["newForm"]["link"].value;
-    var price = parseInt(document.forms["newForm"]["price"].value);
-    product.product.cheap = price;
-    product.product.expensive = price;
-    product.product.sellers.push({id:seller._id ,name:seller.userName, phone:seller.phone, price:price, link:link});
+        product.product.name = document.forms["newForm"]["name"].value;
+        product.product.model = document.forms["newForm"]["MODEL"].value;
+        product.product.brand = document.forms["newForm"]["BRAND"].value;
+        product.product.last_updated = new Date();
+        product.product.size = document.forms["newForm"]["size"].value;
+        product.product.weight = document.forms["newForm"]["weight"].value;
+        product.product.battery = document.forms["newForm"]["battery"].value;
+        product.product.screen = document.forms["newForm"]["screen"].value;
 
 
-    var storeIndex;
-    for(var i = 0; i < seller.store.length; i++){
-        if(storeId === seller.store[i].id){
-            storeIndex = i;
-            break;
-        }
-    }
+        var link = documen.forms["newForm"]["link"].value;
+        var price = parseInt(document.forms["newForm"]["price"].value);
+        product.product.cheap = price;
+        product.product.expensive = price;
+        product.product.sellers.push({id:seller._id ,name:seller.userName, phone:seller.phone, price:price, link:link});
 
-    if(isNaN(price)){
-        window.alert("The entered Price must be a number");
-    }
-    else{
-        this.props.createProduct(product.product, sellerId, storeId)
 
-        var prods = this.props.getProducts()
-        for(var i = 0; i < prods.length; i++){
-            for(var j = 0; j < prods[i].sellers.length; j++){
-                if(prods[i].seller[j].id === seller._id){
-                    prod = prods[i];
-                    i = prods.length + 1;
-                    break;
-                }
+        var storeIndex;
+        for(var i = 0; i < seller.store.length; i++){
+            if(storeId === seller.store[i].id){
+                storeIndex = i;
+                break;
             }
         }
-        //This might be wrong because of the id
-        seller.store[storeIndex].products.push({id: prod._id,name:product.product.name, model:product.product.model, brand:product.product.brand, price:price, link:link})
-        this.props.updateSeller(seller);
+
+        if(isNaN(price)){
+            window.alert("The entered Price must be a number");
+        }
+        else{
+            this.props.createProduct(product.product, sellerId, storeId)
+
+            for(var i = 0; i < prods.length; i++){
+                for(var j = 0; j < prods[i].sellers.length; j++){
+                    if(allProducts[i].seller[j].id === seller._id){
+                        prod = allProducts[i];
+                        i = prods.length + 1;
+                        break;
+                    }
+                }
+            }
+            //This might be wrong because of the id
+            seller.store[storeIndex].products.push({id: prod._id,name:product.product.name, model:product.product.model, brand:product.product.brand, price:price, link:link})
+            this.props.updateSeller(seller);
+        }
+
+        
+    
     }
- 
-}
+
+    handleExistUpdate(event) {
+        event.preventDefault();
+        console.log("this.state ", this.state)
+        console.log("this.props ", this.props)
+
+        seller = this.getSeller(sellerId);
+
+        var storeIndex;
+        for(var i = 0; i < seller.store.length; i++){
+            if(storeId === seller.store[i].id){
+                storeIndex = i;
+                break;
+            }
+        }
+
+        var price = document.forms["existForm"]["price"];
+        var link = document.forms["existForm"]["link"];
+
+        existingProduct.last_updated = new Date();
+        existingProduct.sellers.push({id:sellerId, name: seller.name, phone: seller.phone, price: price, link: link})
+
+        if(isNaN(price)){
+            window.alert("The entered Price must be a number");
+        }
+        else{
+            this.props.updateProduct(existingProduct, sellerId, storeId)
+            //This might be wrong because of the id
+            seller.store[storeIndex].products.push({id: existingProduct._id,name: existingProduct.name, model: existingProduct.model, brand: existingProduct.brand, price:price, link:link})
+            this.props.updateSeller(seller);
+        }
+    }
+
+    addExisitngProduct(p){
+        selected = true;
+        existingProduct = p;
+    }
 
   render(){
 
@@ -115,6 +160,102 @@ handleUpdate(event) {
       </button>
      </form>
     );*/
+
+    const existMode = (
+        <div className="productDetail">
+            <h2>Product Detail</h2>
+                <div>
+                </div>
+            {
+                <div>
+                    <div>Product Name = {existingProduct.name}</div>
+                    <div>Model = {existingProduct.model}</div>
+                    <div>Brand = {existingProduct.brand}</div>
+                    <div>Size = {existingProduct.size}</div>
+                    <div>Weight = {existingProduct.weight}</div>
+                    <div>Battery Power = {existingProduct.battery}</div>
+                    <div>Screen Type = {existingProduct.screen}</div>
+
+                    <form name="existForm" onSubmit={this.handleExistUpdate}>
+                        
+                        <div className="form-group">
+                            <label htmlFor="price">Price</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="price"
+                                name="price"
+                                autoComplete="off"
+                                />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="link">Store Link</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="link"
+                                name="link"
+                                autoComplete="off"
+                                />
+                        </div>
+
+                        <button type="submit" className="btn btn-success btn-lg">
+                            Create
+                        </button>
+                    </form>
+                </div>
+            }
+            
+        </div>
+    );
+
+    const productList = (
+        <div>
+          <div className="col-lg-12 table-responsive">
+
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Model</th>
+                  <th scope="col">Brand</th>
+                  <th scope="col">Size</th>
+                  <th scope="col">Weight</th>
+                  <th scope="col">Battery Power</th>
+                  <th scope="col">Screen Type</th>
+                  <th scope="col">Price Range</th>
+                  <th scope="col">Number of Sellers</th>
+                  <th scope="col">Add This Product</th>
+
+                </tr>
+              </thead>
+              <tbody>
+  
+              {
+                allProducts.map((p,index) =>
+                  <tr key={index}>
+                    <td>{p.name}</td>
+                    <td>{p.model}</td>
+                    <td>{p.brand}</td>
+                    <td>{p.size}</td>
+                    <td>{p.weight}</td>
+                    <td>{p.battery}</td>
+                    <td>{p.screen}</td>
+                    <td>{p.cheap + "-" + p.expensive}</td>
+                    <td>{p.sellers.length}</td>
+                    <td> 
+                        <i className="fa fa-edit btn btn-info" onClick={() => this.addExisitngProduct(p)}> </i>   &nbsp;
+                    </td>
+                  </tr>
+                )
+              }
+            
+              </tbody>
+            </table>
+          </div>
+        </div>
+    )
 
     const lModelChoices = (
         <div>
@@ -144,17 +285,13 @@ handleUpdate(event) {
         </div>
     );
 
-    const existMode = (
-        <div></div>
-    );
-
     const newMode = (
         <div className="productDetail">
             <h2>Product Detail</h2>
                 <div>
                 </div>
             {
-                <form name="newForm" onSubmit={this.handleUpdate}>
+                <form name="newForm" onSubmit={this.handleNewUpdate}>
                     <div className="form-group">
                         <label htmlFor="name">Product Name</label>
                         <input
@@ -278,7 +415,7 @@ handleUpdate(event) {
             <div className="row">
             <div className="col-lg-12 text-center">
             {
-              radioButtons.checked ?  (radioButtons[0].checked ? existMode : newMode): 'Choose a type'
+              radioButtons.checked ?  (radioButtons[0].checked ? (selected ? existMode : productList) : newMode): 'Choose a type'
             }
             </div>
           </div>
@@ -297,7 +434,8 @@ const mapStateToProps = (state) => {
         createProduct: (product, sellerId, storeId) => dispatch(createProduct(product, sellerId, storeId)),
         getProducts: () => dispatch(getProducts()),
         getSeller: (SellerId) => dispatch(getSeller(sellerId)),
-        updateSeller : seller => dispatch(updateSeller(seller))
+        updateSeller : seller => dispatch(updateSeller(seller)),
+        updateProduct : (product, sellerId, storeId) => dispatch(updateProduct(product, sellerId, storeId))
     }
   }
   

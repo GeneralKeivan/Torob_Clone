@@ -1,6 +1,7 @@
 import sellerModel  from "./sellerModel";
 import customerModel from "./customerModel"
 import adminModel from "./adminModel"
+import producrModel from "./productModel"
 class Account {
 
 } 
@@ -87,3 +88,53 @@ Account.prototype.updateCustomer = (req,res) => {
         }
     })
 }
+
+Account.prototype.getProducts = (req, res) => {
+    productModel.find({},(err,products) => {
+        if(err){
+            res.send(err);
+        }else{
+            console.log("result products", products);
+            res.send({'success':true,'message':'Products fetched successfully',products});
+        }
+    })
+}
+
+Account.prototype.addProduct = (req, res) => {
+    let obj = req.body;
+    console.log("obj ", obj);
+    let model = new productModel(obj);
+    console.log("model ", model);
+    model.save((err,result)=>{
+        if(err){
+            res.send(err);
+        }else{
+            res.send({'success':true,'message':'Admin fetched successfully',result});
+        }
+    })
+}
+
+Account.prototype.updateProduct = (req, res) => {
+    let id = req.body._id;
+
+    var prices = [];
+
+    for(var i = 0; i < req.body.sellers.id; i++){
+        prices.push(parseInt(sellers[i].price))
+    }
+    prices = prices.sort(function(a, b){
+        return a - b;
+    });
+
+    var cheap = prices[0];
+    var expensive = prices.slice(-1);
+    productModel.findByIdAndUpdate(id,{cheap: cheap, expensive: expensive, last_updated: req.body.last_updated, sellers : req.body.sellers},(err,result) => {
+        if(err){
+            res.send(err);
+        }else{
+            res.send(result);
+        }
+    })
+}
+
+module.exports = Account;

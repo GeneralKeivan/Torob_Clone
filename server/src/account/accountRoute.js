@@ -16,6 +16,10 @@ router.post('/sellers',controller.addSellers);
 
 router.put('/customers/:id', controller.updateCustomer)
 router.put('/sellers/:id', controller.updateSeller)
+
+router.get('/products', controller.getProducts);
+router.post('/products', controller.addProduct);
+router.put('/products/:id', controller.updateProduct);
 module.exports = router;
 
 
