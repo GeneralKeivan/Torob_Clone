@@ -6,9 +6,10 @@ import PropTypes from 'prop-types'
 import {connect } from 'react-redux';
 import history from "../../history"
 import sellerChange from './sellerChange';
-import {getSeller} from '../../actions/sellerAction'
+import {getSellers} from '../../actions/sellerAction'
 
 var sellerId;
+var sellerIndex;
 class SellerStores extends Component {
     constructor(props){
         super(props);
@@ -16,17 +17,25 @@ class SellerStores extends Component {
 
     componentDidMount() {
         sellerId = windows.location.href.split('/')[4];
-        this.props.getSeller(sellerId);
+        this.props.getSellers();
+
+        for(var i = 0; i < this.props.sellers.length; i++){
+            if(sellerId === this.props.sellers[i]._id){
+                sellerIndex = i;
+                break;
+            }
+        }
+
     }
     
     static propTypes = {
-        getSeller: PropTypes.func.isRequired,
-        seller: PropTypes.object.isRequired
+        getSellers: PropTypes.func.isRequired,
+        sellers: PropTypes.object.isRequired
     }
 
     render() {    
 
-        const stores = this.props.stores;
+        const stores = this.props.sellers[sellerIndex].stores;
 
         const  storeList = (
             <div>
@@ -71,11 +80,11 @@ class SellerStores extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    seller: state.seller,
+    sellers: state.sellers,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    getSeller: (sellerId) => dispatch(getSeller(sellerId)),
+    getSellers: () => dispatch(getSellers()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SellerStores);

@@ -98,7 +98,7 @@ export const validateAccount = (account) => {
 
         if(correct == "admin"){
             history.push('/accounts/admins');
-            return(a)
+            return(fetch(API_URL + '/admins'))
             .then(result => {
                 console.log("account actions ", result);
                 dispatch({
@@ -109,7 +109,7 @@ export const validateAccount = (account) => {
         }
         else if(correct == 'customer'){
             history.push('/accounts/customers');
-            return(c)
+            return(fetch(API_URL + '/customers'))
             .then(result => {
                 console.log("account actions ", result);
                 dispatch({
@@ -120,7 +120,7 @@ export const validateAccount = (account) => {
         }
         else if(correct == 'seller'){
             history.push('/accounts/sellers');
-            return(s)
+            return(fetch(API_URL + '/sellers'))
             .then(result => {
                 console.log("account actions ", result);
                 dispatch({

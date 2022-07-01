@@ -31,7 +31,7 @@ export const addStore = (seller) => {
 
 
 //Most probably wrong
-export const getSeller = (sellerId) => {
+/*export const getSeller = (sellerId) => {
     return (dispatch) => {
         return fetch(API_URL + 'sellers/')
         .then((response) => {
@@ -50,5 +50,5 @@ export const getSeller = (sellerId) => {
         });
     }
 
-}
+}*/
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types'
 import {connect } from 'react-redux';
-import {getSeller} from '../../actions/sellerAction'
+import {getSellers} from '../../actions/sellerAction'
 //import './customers.css';
 import history from "../../history"
 
@@ -16,8 +16,15 @@ class SellerReviews extends Component {
     }
 
     componentDidMount() {
-        sellerId = windwo.location.href.split('/')[4];
-        seller = getSeller(sellerId);
+        sellerId = window.location.href.split('/')[4];
+        sellers = getSellers();
+
+        for(var i = 0; i < sellers.length; i++){
+            if(sellerId === sellers[i]._id){
+                seller = sellers[i];
+                break;
+            }
+        }
     }
 
     showReview(review){
@@ -88,7 +95,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
    //agetCustomers: () => dispatch(getCustomers()),
-   getSeller: (sellerId) => dispatch(getSeller(sellerId))
+   getSellers: () => dispatch(getSellers())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SellerReviews);

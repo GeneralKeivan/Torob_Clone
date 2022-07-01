@@ -1,5 +1,5 @@
 import React from 'react';
-import { getSeller, updateSeller, createProduct, getProducts, updateProduct } from '../../actions/sellerAction';
+import { getSellers, updateSeller, createProduct, getProducts, updateProduct } from '../../actions/sellerAction';
 import {connect } from 'react-redux';
 import history from '../../history'
 const API_URL = 'http://localhost:3001/api/';
@@ -41,13 +41,15 @@ class SellerStoresNewProduct extends React.Component {
         this.handleExistUpdate = this.handleExistUpdate.bind(this);
     }
     static propTypes = {
-        getSeller: PropTypes.func.isRequired,
+        getSellers: PropTypes.func.isRequired,
         getProducts: PropTypes.func.isRequired,
         createProduct: PropTypes.func.isRequired,
+        sellers: PropTypes.object.isRequired
     }
 
     componentDidMount(){
        allProducts = this.props.getProducts()
+       sellers = this.props.getSellers();
     }
 //find correct info for model and brand
     handleNewUpdate(event) {
@@ -55,7 +57,11 @@ class SellerStoresNewProduct extends React.Component {
         console.log("this.state ", this.state)
         console.log("this.props ", this.props)
 
-        seller = this.getSeller(sellerId);
+        for(var i = 0; i < this.props.sellers.length; i++){
+            if(this.props.sellers[i]._id === sellerId){
+                seller = sellers[i];
+            }
+        }
 
         product.product.name = document.forms["newForm"]["name"].value;
         product.product.model = document.forms["newForm"]["MODEL"].value;
@@ -111,7 +117,11 @@ class SellerStoresNewProduct extends React.Component {
         console.log("this.state ", this.state)
         console.log("this.props ", this.props)
 
-        seller = this.getSeller(sellerId);
+        for(var i = 0; i < this.props.sellers.length; i++){
+            if(this.props.sellers[i]._id === sellerId){
+                seller = sellers[i];
+            }
+        }
 
         var storeIndex;
         for(var i = 0; i < seller.store.length; i++){
@@ -433,7 +443,7 @@ const mapStateToProps = (state) => {
     return {
         createProduct: (product, sellerId, storeId) => dispatch(createProduct(product, sellerId, storeId)),
         getProducts: () => dispatch(getProducts()),
-        getSeller: (SellerId) => dispatch(getSeller(sellerId)),
+        getSellers: () => dispatch(getSellers()),
         updateSeller : seller => dispatch(updateSeller(seller)),
         updateProduct : (product, sellerId, storeId) => dispatch(updateProduct(product, sellerId, storeId))
     }
