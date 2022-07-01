@@ -1,4 +1,4 @@
-import {GET_ACCOUNTS, VALIDATE_ACCOUNT, ADD_SELLER} from '../constants/ActionTypes'
+import {GET_ACCOUNTS, VALIDATE_ACCOUNT, ADD_ACCOUNT} from '../constants/ActionTypes'
 import axios from "axios";
 import history from '../history'
 import { resetWarningCache } from 'prop-types';

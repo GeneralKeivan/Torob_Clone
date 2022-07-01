@@ -6,14 +6,14 @@ import {connect } from 'react-redux';
 import history from "../../history"
 import {getCustomer} from '../../actions/customerAction'
 
-//var sellerId;
+var customerId, product;
 class CustomerRecents extends Component {
     constructor(props){
         super(props);
     }
 
     componentDidMount() {
-        customerId = windows.location.href.split('/')[4];
+        customerId = window.location.href.split('/')[4];
         this.props.getCustomer(customerId);
     }
     
@@ -31,7 +31,7 @@ class CustomerRecents extends Component {
 
     render() {    
 
-        const favorites = this.props.favorites;
+        const recents = this.props.recents;
 
         const  productList = (
             <div>
@@ -46,10 +46,10 @@ class CustomerRecents extends Component {
                         <tbody>
             
                         {
-                        favorites.map((favorite,index) =>
+                        recents.map((recent,index) =>
                             <tr key={index}>
-                            <td>{product.name}</td>
-                            <td> <i className="fa fa-edit btn btn-info" onClick={() => this.viewProduct(favorite)}> </i></td>   &nbsp;
+                            <td>{recent.name}</td>
+                            <td> <i className="fa fa-edit btn btn-info" onClick={() => this.viewProduct(recent)}> </i></td>   &nbsp;
                             </tr>
                         )
                         }

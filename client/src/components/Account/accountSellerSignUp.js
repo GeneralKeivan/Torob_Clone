@@ -2,6 +2,7 @@ import React from 'react';
 import { addSeller } from '../../actions/accountAction';
 import {connect } from 'react-redux';
 import history from '../../history'
+import PropTypes from 'prop-types'
 import axios from "axios"
 import { string } from 'prop-types';
 
@@ -49,7 +50,7 @@ class SellerSignUp extends React.Component {
         this.state.account.userName = userName;
         this.state.account.email = email;
         this.state.account.password = password;
-        this.state.account.type = type;
+        this.state.account.type = "seller";
 
         this.props.addSeller(this.state.account);
     }
@@ -134,9 +135,9 @@ function showPassword() {
 //but at the moment i cant think of another way
 const validateUser = (userName, email) => {
     const API_URL = 'http://localhost:3001/api/';
-    a = fetch(API_URL + 'customers/')
-    b = fetch(API_URL + 'sellers/')
-    c = fetch(API_URL + 'admins/')
+    var a = fetch(API_URL + 'customers/')
+    var b = fetch(API_URL + 'sellers/')
+    var c = fetch(API_URL + 'admins/')
     console.log("a = ", a);
     console.log("b = ", b);
     console.log("c = ", c);
@@ -177,7 +178,7 @@ const validatePassword = (password) => {
         return false;
     }
 
-    upper = String(password).toLowerCase();
+    var upper = String(password).toLowerCase();
     if(String(password) == upper){
         window.alert("Password needs to have atleast one Uppercase letter and one Lowercase letter");
         return false;

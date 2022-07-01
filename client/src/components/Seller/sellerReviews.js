@@ -9,6 +9,7 @@ import history from "../../history"
 var version = true;
 var reviewMain;
 var seller;
+var sellerId;
 class SellerReviews extends Component {
 
     constructor(props){
@@ -17,7 +18,7 @@ class SellerReviews extends Component {
 
     componentDidMount() {
         sellerId = window.location.href.split('/')[4];
-        sellers = getSellers();
+        var sellers = getSellers();
 
         for(var i = 0; i < sellers.length; i++){
             if(sellerId === sellers[i]._id){

@@ -16,7 +16,7 @@ class SellerStores extends Component {
     }
 
     componentDidMount() {
-        sellerId = windows.location.href.split('/')[4];
+        sellerId = window.location.href.split('/')[4];
         this.props.getSellers();
 
         for(var i = 0; i < this.props.sellers.length; i++){

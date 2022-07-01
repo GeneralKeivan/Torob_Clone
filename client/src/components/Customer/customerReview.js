@@ -36,7 +36,7 @@ handleUpdate(event) {
     var customers = fetch(API_URL + 'customers');
     var customer;
 
-    for(var i = 0; i < customerss.length; i++){
+    for(var i = 0; i < customers.length; i++){
         if(customers[i]._id === customerId){
             customer = customers[i];
             i = customer.length + 1;
@@ -94,7 +94,7 @@ handleUpdate(event) {
             <div className="row">
             <div className="col-lg-12 text-center">
             {
-              radioButtons.checked ?  productList: 'Choose a review type'
+              radioButtons.checked ?  reviewBox: 'Choose a review type'
             }
             </div>
           </div>

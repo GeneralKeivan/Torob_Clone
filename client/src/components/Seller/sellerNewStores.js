@@ -26,31 +26,32 @@ class SellerNewStores extends React.Component {
     }
 
     render(){
-        <div className="courseDetail">
-            <h2>Store Details</h2>
-            <div></div>
-            {
-            <form name="myForm" onSubmit={this.handleUpdate}>
-                
-                <div className="form-group">
-                    <label htmlFor="storeName">Store Name</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="storeName"
-                        name="storeName"
-                        autoComplete="off"
-                    />
-                </div>
+        return(
+            <div className="courseDetail">
+                <h2>Store Details</h2>
+                <div></div>
+                {
+                <form name="myForm" onSubmit={this.handleUpdate}>
+                    
+                    <div className="form-group">
+                        <label htmlFor="storeName">Store Name</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="storeName"
+                            name="storeName"
+                            autoComplete="off"
+                        />
+                    </div>
 
-                <button type="submit" className="btn btn-success btn-lg">
-                    SAVE
-                </button>
-            </form>
+                    <button type="submit" className="btn btn-success btn-lg">
+                        SAVE
+                    </button>
+                </form>
 
-            }
-            
-        </div>
+                }
+            </div>
+        );
     }
 
 }

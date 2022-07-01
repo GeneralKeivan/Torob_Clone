@@ -1,6 +1,7 @@
 import React from 'react';
 import { validateAccount } from '../../actions/accountAction';
 import {connect } from 'react-redux';
+import PropTypes from 'prop-types'
 import history from '../../history'
 
 //This code is for updating student id

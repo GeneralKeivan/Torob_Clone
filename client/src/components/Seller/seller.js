@@ -21,7 +21,7 @@ class Sellers extends Component {
     }*/
 
     render() {
-        url = window.location.href;
+        var url = window.location.href;
         return (
             <div>
                 <Link to={url + 'change'} ><button className="btn btn-primary pull-left" >Change Details</button></Link>

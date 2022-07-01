@@ -102,7 +102,7 @@ class Customer extends Component {
                   <tbody>
       
                   {
-                    searchProducts.map((product,index) =>
+                    searchedProducts.map((product,index) =>
                       <tr key={index}>
                         <td>{product.name}</td>
                         <td>{product.cheap + " - " + product.expensive}</td>

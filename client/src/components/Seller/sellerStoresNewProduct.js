@@ -1,6 +1,7 @@
 import React from 'react';
 import { getSellers, updateSeller, createProduct, getProducts, updateProduct } from '../../actions/sellerAction';
 import {connect } from 'react-redux';
+import PropTypes from 'prop-types'
 import history from '../../history'
 const API_URL = 'http://localhost:3001/api/';
 
@@ -49,7 +50,7 @@ class SellerStoresNewProduct extends React.Component {
 
     componentDidMount(){
        allProducts = this.props.getProducts()
-       sellers = this.props.getSellers();
+       //sellers = this.props.getSellers();
     }
 //find correct info for model and brand
     handleNewUpdate(event) {
@@ -59,7 +60,7 @@ class SellerStoresNewProduct extends React.Component {
 
         for(var i = 0; i < this.props.sellers.length; i++){
             if(this.props.sellers[i]._id === sellerId){
-                seller = sellers[i];
+                seller = this.props.sellers[i];
             }
         }
 
@@ -73,7 +74,7 @@ class SellerStoresNewProduct extends React.Component {
         product.product.screen = document.forms["newForm"]["screen"].value;
 
 
-        var link = documen.forms["newForm"]["link"].value;
+        var link = document.forms["newForm"]["link"].value;
         var price = parseInt(document.forms["newForm"]["price"].value);
         product.product.cheap = price;
         product.product.expensive = price;
@@ -93,12 +94,12 @@ class SellerStoresNewProduct extends React.Component {
         }
         else{
             this.props.createProduct(product.product, sellerId, storeId)
-
-            for(var i = 0; i < prods.length; i++){
-                for(var j = 0; j < prods[i].sellers.length; j++){
+            var prod;
+            for(var i = 0; i < allProducts.length; i++){
+                for(var j = 0; j < allProducts[i].sellers.length; j++){
                     if(allProducts[i].seller[j].id === seller._id){
                         prod = allProducts[i];
-                        i = prods.length + 1;
+                        i = allProducts.length + 1;
                         break;
                     }
                 }
@@ -119,7 +120,7 @@ class SellerStoresNewProduct extends React.Component {
 
         for(var i = 0; i < this.props.sellers.length; i++){
             if(this.props.sellers[i]._id === sellerId){
-                seller = sellers[i];
+                seller = this.props.sellers[i];
             }
         }
 
@@ -315,13 +316,13 @@ class SellerStoresNewProduct extends React.Component {
 
                     <div className="form-group" id="MODEL">
                         <label htmlFor="model">Model</label>
-                        <input type="radio" name="mobile" value="Mobile" id="mobile"/>
+                        <input type="radio" name="model" value="Mobile" id="mobile"/>
                         <label for="mobile">Mobile Phone</label>
 
-                        <input type="radio" name="tablet" value="Tablet" id="tablet"/>
+                        <input type="radio" name="model" value="Tablet" id="tablet"/>
                         <label for="tablet">Tablet</label>
 
-                        <input type="radio" name="laptop" value="Laptop" id="laptop"/>
+                        <input type="radio" name="model" value="Laptop" id="laptop"/>
                         <label for="laptop">Laptop</label>
                     </div>
 
@@ -409,7 +410,8 @@ class SellerStoresNewProduct extends React.Component {
         </div>
     );
 
-    radioButtons = document.querySelectorAll('input[name="type"]');
+    var radioButtons = document.querySelectorAll('input[name="exists"]');
+    var modelButtons = document.querySelectorAll('input[name="model"]');
     return(
         <div className="customerReview">
             <h2>How do you want to add the product</h2>
@@ -417,7 +419,7 @@ class SellerStoresNewProduct extends React.Component {
               <input type="radio" name="exists" value="Exists" id="exists" />
               <label for="exists">Product already exists on website</label>
 
-              <input type="radio" name="newProduct" value="NewProduct" id="newProduct" />
+              <input type="radio" name="exists" value="NewProduct" id="newProduct" />
               <label for="newProduct">Create a new Product</label>
 
             </div>
@@ -436,7 +438,7 @@ class SellerStoresNewProduct extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-      //customers: state.customers
+      sellers: state.sellers
     }
   }
   const mapDispatchToProps = (dispatch) => {

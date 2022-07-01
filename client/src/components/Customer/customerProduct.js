@@ -19,8 +19,8 @@ class CustomerProduct extends Component {
     }
 
     componentDidMount() {
-        customerId = windows.location.href.split('/')[4];
-        productId = windows.location.href.split('/')[6];
+        customerId = window.location.href.split('/')[4];
+        productId = window.location.href.split('/')[6];
 
         this.props.updateCustomerRecent(this.state.product, customerId);
     }
@@ -89,7 +89,7 @@ class CustomerProduct extends Component {
             </div>
             <div className="col-lg-12 text-center">
             {
-              product.length === 0 ? 'No Products' :productList
+              products.length === 0 ? 'No Products' :productList
             }
             </div>
           </div>

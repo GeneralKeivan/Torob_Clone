@@ -111,7 +111,7 @@ class CustomerMobileSamsung extends Component {
     }
 
     specificPhone(name){
-        console.log("this.state ", viewProductDetail);
+        console.log("this.state ", name);
         history.push('accounts/customers/' + id + "/product/mobiles/" + name)
     }
 
@@ -134,7 +134,7 @@ class CustomerMobileSamsung extends Component {
                   <tbody>
       
                   {
-                    searchProducts.map((product,index) =>
+                    searchedProducts.map((product,index) =>
                       <tr key={index}>
                         <td>{product.name}</td>
                         <td>{product.cheap + " - " + product.expensive}</td>

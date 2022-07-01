@@ -7,13 +7,14 @@ import history from "../../history"
 import {getCustomer} from '../../actions/customerAction'
 
 //var sellerId;
+var customerId;
 class CustomerFavorites extends Component {
     constructor(props){
         super(props);
     }
 
     componentDidMount() {
-        customerId = windows.location.href.split('/')[4];
+        customerId = window.location.href.split('/')[4];
         this.props.getCustomer(customerId);
     }
     
@@ -48,7 +49,7 @@ class CustomerFavorites extends Component {
                         {
                         favorites.map((favorite,index) =>
                             <tr key={index}>
-                            <td>{product.name}</td>
+                            <td>{favorite.name}</td>
                             <td> <i className="fa fa-edit btn btn-info" onClick={() => this.viewProduct(favorite)}> </i></td>   &nbsp;
                             </tr>
                         )
