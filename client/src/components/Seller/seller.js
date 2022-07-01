@@ -24,9 +24,10 @@ class Sellers extends Component {
         var url = window.location.href;
         return (
             <div>
-                <Link to={url + 'change'} ><button className="btn btn-primary pull-left" >Change Details</button></Link>
-                <Link to={url + 'reviews'} ><button className="btn btn-success pull-left" >View Reviews</button></Link>
-                <Link to={url + 'stores'} ><button className="btn btn-success pull-left" >View Stores</button></Link>
+                <Link to={'/change'} ><button className="btn btn-primary pull-left" >Change Details</button></Link>
+                <Link to={'/reviews'} ><button className="btn btn-success pull-left" >View Reviews</button></Link>
+                <Link to={'/stores'} ><button className="btn btn-success pull-left" >View Stores</button></Link>
+                <Link to={'/accounts/'} ><button className="btn btn-primary pull-left" >Sign Out</button></Link>
             </div>
         );
     }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types'
 import {connect } from 'react-redux';
+import { getProducts } from '../../actions/productAction';
 //import {searchProduct} from '../../actions/customerAction'
 import history from "../../history"
 const API_URL = 'http://localhost:3001/api/';
@@ -12,9 +13,10 @@ var searchedProducts = [];
 var lowHighProducts = [];
 var highLowProducts = [];
 var recentProducts = [];
-var id = window.location.href.split('/')[4];
-var url = 'accounts/customers/' + id;
+const url = window.location.href.split('/');
+const id = url[5];
 var sortType = "none"
+var found = false;
 class Customer extends Component {
 
     constructor(props){
@@ -25,10 +27,17 @@ class Customer extends Component {
     }
 
     componentDidMount() {
-        products = fetch(API_URL + 'products');
+        this.props.getProducts();
+        console.log("broken url: ", url)
+        console.log("id: ", id)
     }
+
+    static propTypes = {
+      getProducts: PropTypes.func.isRequired,
+      products: PropTypes.object.isRequired
+    }
+
     viewProduct = (viewProductDetail) => {
-        
         console.log("this.state ", viewProductDetail);
         history.push('accounts/customers/' + id + "/product/" + viewProductDetail._id, {'product' : viewProductDetail})
     }
@@ -40,14 +49,19 @@ class Customer extends Component {
         console.log("this.props ", this.props)
     
     
-        var searchBar = document.forms.myForm.searchBar.value;
-
+        var searchBar = document.forms["myForm"]["searchBar"].value;
         //might need to add a .products to the end of fetch
         for(var i = 0; i < products.length; i++){
-            if(products[i].name.inludes(searchBar) || products[i].model.inludes(searchBar) || products[i].brand.inludes(searchBar)){
+            if(products[i].name.includes(searchBar) || products[i].model.inludes(searchBar) || products[i].brand.inludes(searchBar)){
                 searchedProducts.push(products[i])
             }
         }
+
+        console.log("searched products: ", searchedProducts)
+        if(searchedProducts.length === 0){
+          found = false;
+        }
+
         lowHighProducts = searchedProducts;
         highLowProducts = searchedProducts;
         recentProducts  = searchedProducts;
@@ -68,22 +82,14 @@ class Customer extends Component {
         });
 
     }
-    
-    /*componentDidMount() {
-        var customerId = window.location.href.split('/')[4];
-        this.props.getCustomer(customerId);
-    }*/
-
-    static propTypes = {
-        //getCustomer: PropTypes.func.isRequired,
-        products: PropTypes.object.isRequired
-    }
 
     sort(t){
         sortType = t;
     }
 
     render() {
+      products = this.props.products.products;
+      console.log("render products: ", this.props.products)
         //might need to change this customer
         const productList = (
             <div>
@@ -224,22 +230,22 @@ class Customer extends Component {
               </div>
             </div>
         )
-
+                
         return (
             <div>
                 <div>
-                    <Link to={url} ><button className="btn btn-primary pull-left" >Main Page</button></Link>
-                    <Link to={url + '/product/mobiles'} ><button className="btn btn-primary pull-left" >Mobiles</button></Link>
-                    <Link to={url + '/product/tablets'} ><button className="btn btn-primary pull-left" >Tablets</button></Link>
-                    <Link to={url + '/product/laptops'} ><button className="btn btn-primary pull-left" >Laptops</button></Link>
-                    <Link to={url + '/favorites'} ><button className="btn btn-primary pull-left" >Favorites</button></Link>
-                    <Link to={url + '/recents'} ><button className="btn btn-primary pull-left" >Recents</button></Link>
+                    <Link to={'/accounts/customers/' + id} ><button className="btn btn-primary pull-left" >Main Page</button></Link>
+                    <Link to={'/accounts/customers/' + id + '/product/mobiles/'} ><button className="btn btn-primary pull-left" >Mobiles</button></Link>
+                    <Link to={'/accounts/customers/' + id + '/product/tablets/'} ><button className="btn btn-primary pull-left" >Tablets</button></Link>
+                    <Link to={'/accounts/customers/' + id + '/product/laptops/'} ><button className="btn btn-primary pull-left" >Laptops</button></Link>
+                    <Link to={'/accounts/customers/' + id + '/favorites/'} ><button className="btn btn-primary pull-left" >Favorites</button></Link>
+                    <Link to={'/accounts/customers/' + id + '/recents/'} ><button className="btn btn-primary pull-left" >Recents</button></Link>
                     <Link to={'/accounts/'} ><button className="btn btn-primary pull-left" >Sign Out</button></Link>
                 </div>
                 <div>
-                    <button onclick="this.sort('low')">Lowest to Highest</button>
-                    <button onclick="this.sort('high')">Highest to Lowest</button>
-                    <button onclick="this.sort('recent')">Most Recent</button>
+                    <button onClick={()=>this.sort('low')}>Lowest to Highest</button>
+                    <button onClick={()=>this.sort('high')}>Highest to Lowest</button>
+                    <button onClick={()=>this.sort('recent')}>Most Recent</button>
                 </div>
                 <form name="myForm" onSubmit={this.handleUpdate}>
                     <div className="form-group">
@@ -249,7 +255,7 @@ class Customer extends Component {
                             id="searchBar"
                             name="searchBar"
                             autoComplete="off"
-                            value={"Search.."}
+                            placeholder='Search..'
                             />
                     </div>
                     <button type="submit" className="btn btn-success btn-lg">
@@ -270,13 +276,14 @@ class Customer extends Component {
     }
 }
 
-/*const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({
   //customer: state.customer
+  products: state.products,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-   searchProduct: (searchBar) => dispatch(searchProduct(searchBar)),
+    getProducts: () => dispatch(getProducts()),
+    //searchProduct: (searchBar) => dispatch(searchProduct(searchBar)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Customer);*/
-export default (Customer)
+export default connect(mapStateToProps, mapDispatchToProps)(Customer);

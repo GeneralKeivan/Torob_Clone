@@ -5,11 +5,15 @@ import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types'
 import {connect } from 'react-redux';
 import history from "../../history"
+import { getProducts } from '../../actions/productAction';
 import { updateCustomerFavorite, updateCustomerRecent } from '../../actions/customerAction';
 
 
-var customerId;
-var productId;
+const customerId = window.location.href.split('/')[5];
+const productId = window.location.href.split('/')[7];
+var products, product;
+var first;
+var cont = false;
 class CustomerProduct extends Component {
     constructor(props){
         super(props);
@@ -19,14 +23,20 @@ class CustomerProduct extends Component {
     }
 
     componentDidMount() {
-        customerId = window.location.href.split('/')[4];
-        productId = window.location.href.split('/')[6];
-
-        this.props.updateCustomerRecent(this.state.product, customerId);
+        this.props.getProducts();
+        console.log("props : ", this.props)
+        first = true;
+        this.props.updateCustomerRecent(product, customerId);
     }
 
+    static propTypes = {
+        getCustomers: PropTypes.func.isRequired,
+        customers: PropTypes.object.isRequired,
+        updateCustomerFavorite: PropTypes.func.isRequired,
+        updateCustomerRecent: PropTypes.func.isRequired
+    }
     favoriteProduct(){
-        this.props.updateCustomerFavorite(this.state.product, customerId)
+        this.props.updateCustomerFavorite(product, customerId)
     }
 
     reviewStore(sellerId){
@@ -37,7 +47,17 @@ class CustomerProduct extends Component {
     //Might need to change the data in <td>
     render() {    
 
-        const products = this.state.product
+        if(first){
+            for(var i = 0; i < products.length; i++){
+                if(products[i]._id === productId){
+                    product = products[i];
+                    break;
+                }
+            }
+            first = false;
+            cont = true;
+            console.log("product ", product)
+        }
         const  productList = (
             <div>
                 <div>
@@ -82,6 +102,8 @@ class CustomerProduct extends Component {
                 </div>
             </div>
       )
+
+      if(cont){
         return (
           <div className="row">
             <div className="col-lg-12">
@@ -94,6 +116,12 @@ class CustomerProduct extends Component {
             </div>
           </div>
         );
+      }
+      else{
+        return(
+            <div></div>
+        );
+      }
     }
 
 }
@@ -104,6 +132,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     //getSeller: (SellerId) => dispatch(getSeller(sellerId)),
+    getProducts: () => dispatch(getProducts()),
     updateCustomerFavorite : (product, customerId) => dispatch(updateCustomerFavorite(product, customerId)),
     updateCustomerRecent : (product, customerId) => dispatch(updateCustomerRecent(product, customerId))
 })

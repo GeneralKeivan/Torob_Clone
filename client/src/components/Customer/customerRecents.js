@@ -4,22 +4,33 @@ import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types'
 import {connect } from 'react-redux';
 import history from "../../history"
-import {getCustomer} from '../../actions/customerAction'
+import { getCustomers } from '../../actions/customerAction';
 
-var customerId, product;
+const url = window.location.href.split('/');
+const id = url[5];
+var first;
+var customers;
+var customer;
+var first;
+var cont = false;
 class CustomerRecents extends Component {
     constructor(props){
         super(props);
+        const location = history.location
+        this.state = location.state;
     }
 
     componentDidMount() {
-        customerId = window.location.href.split('/')[4];
-        this.props.getCustomer(customerId);
+        this.props.getCustomers();
+        console.log("props : ", this.props)
+        console.log("broken url: ", url)
+        console.log("id: ", id)
+        first = true;
     }
     
     static propTypes = {
-        getCustomer: PropTypes.func.isRequired,
-        customer: PropTypes.object.isRequired
+        getCustomers: PropTypes.func.isRequired,
+        customers: PropTypes.object.isRequired
     }
 
     viewProduct(favorite){
@@ -30,54 +41,71 @@ class CustomerRecents extends Component {
     }
 
     render() {    
-
-        const recents = this.props.recents;
-
-        const  productList = (
-            <div>
-                <div className="col-lg-12 table-responsive">
-                    <table className="table table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col">Product Name</th>
-                            <th scope="col">Go to product page</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-            
-                        {
-                        recents.map((recent,index) =>
-                            <tr key={index}>
-                            <td>{recent.name}</td>
-                            <td> <i className="fa fa-edit btn btn-info" onClick={() => this.viewProduct(recent)}> </i></td>   &nbsp;
+        customers = this.props.customers.customers;
+        if(first){
+            console.log("id : ", id)
+            for(var i = 0; i < customers.length; i++){
+                if(customers[i]._id === id){
+                    customer = customers[i];
+                    break;
+                }
+            }
+            first = false;
+            cont = true;
+            console.log("customer ", customer)
+        }
+        if(cont){
+            var recents = customer.recents;
+            const  productList = (
+                <div>
+                    <div className="col-lg-12 table-responsive">
+                        <table className="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Go to product page</th>
                             </tr>
-                        )
-                        }
-                    
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                
+                            {
+                            recents.map((recent,index) =>
+                                <tr key={index}>
+                                <td>{recents.name}</td>
+                                <td> <i className="fa fa-edit btn btn-info" onClick={() => this.viewProduct(recent)}> </i></td>   &nbsp;
+                                </tr>
+                            )
+                            }
+                        
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )
+            return (
+            <div className="row">
+                <div className="col-lg-12 text-center">
+                {
+                    recents.length === 0 ? 'There are no recent products' :productList
+                }
                 </div>
             </div>
-      )
-        return (
-          <div className="row">
-            <div className="col-lg-12 text-center">
-            {
-              recents.length === 0 ? 'You have not favorited any products' :productList
-            }
-            </div>
-          </div>
-        );
+            );
+        }
+        else{
+            return (
+                <div></div>
+            );
+        }
     }
-
 }
 
 const mapStateToProps = (state) => ({
-    customer: state.customer,
+    customers: state.customers,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    getCustomer: (customerId) => dispatch(getCustomer(customerId)),
+    getCustomers: () => dispatch(getCustomers()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerRecents);

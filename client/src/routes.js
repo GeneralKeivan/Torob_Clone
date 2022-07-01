@@ -10,7 +10,6 @@ import LogIn                                    from './components/Account/accou
 
 import Admins                                   from './components/Admin/admin'
 
-
 import Customers                                from './components/Customer/customer'
 
 import CustomerMobiles                          from './components/Customer/customerMobiles'
@@ -55,8 +54,10 @@ const routing = () =>(
 
         <Route exact path="/accounts/admin/:id" component={Admins} /> 
 
+        <Route exact path="/accounts/customers/:id" render = {props => <Customers {...props}/>} /> 
 
-        <Route exact path="/accounts/customers/:id" component={Customers} /> 
+
+        <Route exact path="/accounts/sellers/:id" render = {props => <Sellers {...props}/>} /> 
         
 
         <Route exact path="/accounts/customers/:id/product/mobiles" component={CustomerMobiles} /> 
@@ -81,7 +82,6 @@ const routing = () =>(
         <Route exact path="/accounts/customers/:id/recents" component={CustomerRecents} /> 
 
 
-        <Route exact path="/accounts/sellers/:id" component={Sellers} /> 
         <Route exact path="/accounts/sellers/:id/change" component={SellerChange} /> 
         <Route exact path="/accounts/sellers/:id/reviews" component={SellerReviews} /> 
         <Route exact path="/accounts/sellers/:id/stores" component={SellerStores} /> 

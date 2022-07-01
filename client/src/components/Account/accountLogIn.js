@@ -20,7 +20,6 @@ class LogIn extends React.Component {
   }
 
   static propTypes = {
-    validateAccount: PropTypes.func.isRequired,
     getCustomers: PropTypes.func.isRequired,
     customers: PropTypes.object.isRequired,
     getSellers: PropTypes.func.isRequired,
@@ -117,9 +116,10 @@ class LogIn extends React.Component {
     for(var i = 0; i < c.length; i++){
         if(account.userName === c[i].userName || account.email === c[i].email){
             if(account.password === c[i].password){
-                history.push('/accounts/customer/' + c[i]._id)
-                i = c.length + 1;
+                console.log("log in to customer : " + c[i].userName)
+                history.push('/accounts/customers/' + c[i]._id)
                 correct = "customer";
+                break;
             }
         }
     }
@@ -127,20 +127,15 @@ class LogIn extends React.Component {
     for(var i = 0; i < s.length; i++){
         if(account.userName === s[i].userName || account.email === s[i].email){
             if(account.password === s[i].password){
-                history.push('/accounts/seller/' + s[i]._id)
-                i = s + 1;
+                console.log("log in to seller : " + s[i].userName)
+                history.push('/accounts/sellers/' + s[i]._id)
                 correct = "seller";
+                break;
             }
         }
     }
   
-    if(correct === 'customer'){
-        history.push('/accounts/customers');
-    }
-    else if(correct === 'seller'){
-        history.push('/accounts/sellers');
-    }
-    else{
+    if(correct === "non"){
         window.alert("This account doesn't exist")
         //history.push('/accounts/log-in');
     }
