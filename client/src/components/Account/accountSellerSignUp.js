@@ -62,6 +62,7 @@ class SellerSignUp extends React.Component {
         account.userName = userName;
         account.email = email;
         account.password = password;
+        account.phone = phone;
         account.type = "seller";
 
         this.props.addSeller(account);
@@ -177,7 +178,7 @@ const validateUser = (userName, email) => {
         window.alert("A user with the same Username already exists");
         return false;
     }
-}
+  }
 
   return true;
 }

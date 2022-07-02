@@ -7,7 +7,7 @@ import history from "../../history"
 import { getCustomers } from '../../actions/customerAction';
 
 const url = window.location.href.split('/');
-const id = url[5];
+const id = localStorage.getItem("customerId");
 var first;
 var customers;
 var customer;

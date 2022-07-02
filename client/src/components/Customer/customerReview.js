@@ -6,8 +6,8 @@ import { getCustomers } from '../../actions/customerAction';
 const API_URL = 'http://localhost:3001/api/';
 
 const url = window.location.href.split('/');
-const customerId = url[5];
-const sellerId = url[7];
+const customerId = localStorage.getItem("customerId");
+const sellerId = localStorage.getItem("sellerId");
 var customers, customer;
 var sellers, seller;
 var first;

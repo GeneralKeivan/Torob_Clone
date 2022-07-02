@@ -4,6 +4,10 @@ import PropTypes from 'prop-types'
 import {connect } from 'react-redux';
 //import {getSellers} from '../../actions/sellerAction'
 import history from "../../history"
+
+
+const url = window.location.href.split('/');
+const id = localStorage.getItem("sellerId");
 class Sellers extends Component {
 
     constructor(props){
@@ -11,35 +15,18 @@ class Sellers extends Component {
         //this.viewCustomer = this.viewCustomer.bind(this);
     }
 
-    componentDidMount() {
-        //this.props.getSellers();
-    }
-
-    /*static propTypes = {
-        getSellers: PropTypes.func.isRequired,
-        sellers: PropTypes.object.isRequired
-    }*/
 
     render() {
-        var url = window.location.href;
         return (
             <div>
-                <Link to={'/change'} ><button className="btn btn-primary pull-left" >Change Details</button></Link>
-                <Link to={'/reviews'} ><button className="btn btn-success pull-left" >View Reviews</button></Link>
-                <Link to={'/stores'} ><button className="btn btn-success pull-left" >View Stores</button></Link>
+                <Link to={'/accounts/sellers/' + id + '/change'} ><button className="btn btn-primary pull-left" >Change Details</button></Link>
+                <Link to={'/accounts/sellers/' + id +'/reviews'} ><button className="btn btn-success pull-left" >View Reviews</button></Link>
+                <Link to={'/accounts/sellers/' + id +'/stores'} ><button className="btn btn-success pull-left" >View Stores</button></Link>
                 <Link to={'/accounts/'} ><button className="btn btn-primary pull-left" >Sign Out</button></Link>
             </div>
         );
     }
 }
 
-/*const mapStateToProps = (state) => ({
-  //sellers: state.sellers
-})
 
-const mapDispatchToProps = (dispatch) => ({
-   //getSellers: () => dispatch(getSellers()),
-})*/
-
-//export default connect(mapStateToProps, mapDispatchToProps)(Sellers);
 export default (Sellers)

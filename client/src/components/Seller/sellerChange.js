@@ -1,8 +1,16 @@
 import React from 'react';
-import { updateSeller } from '../../actions/sellerAction';
+import { updateSeller, getSellers } from '../../actions/sellerAction';
+import { getCustomers } from '../../actions/customerAction';
+import PropTypes from 'prop-types'
 import {connect } from 'react-redux';
 import history from '../../history'
 
+var sellers, seller;
+var customers;
+var first;
+var cont = false;
+const url = window.location.href.split('/');
+const id = localStorage.getItem("sellerId");
 class SellerDetails extends React.Component {
     constructor(props){
         super(props);
@@ -11,13 +19,20 @@ class SellerDetails extends React.Component {
         this.handleUpdate = this.handleUpdate.bind(this);
     }
 
-handleChangeFor = (propertyName) => (event) => {
-    const { seller } = this.state;
-    const sellerDetails = {
-      ...seller,
-      [propertyName]: event.target.value
-    };
-    this.setState({ seller: sellerDetails });
+
+  componentDidMount() {
+    this.props.getSellers();
+    this.props.getCustomers();
+    first = true;
+    console.log("sellerId ", id)
+  }
+
+  static propTypes = {
+    updateSeller: PropTypes.func.isRequired,
+    getCustomers: PropTypes.func.isRequired,
+    customers: PropTypes.object.isRequired,
+    getSellers: PropTypes.func.isRequired,
+    sellers: PropTypes.object.isRequired
   }
 
   handleUpdate(event) {
@@ -25,109 +40,154 @@ handleChangeFor = (propertyName) => (event) => {
     console.log("this.state ", this.state)
     console.log("this.props ", this.props)
 
-    var myForm = document.forms.myForm;
-    var userName = myForm.userName.value;
-    var email = myForm.email.value;
-    var password = myForm.password.value;
-    var phone = myForm.phone.value;
+    var myForm = document.forms["myForm"];
+    var userName = myForm["userName"].value;
+    var email = myForm["email"].value;
+    var phone = myForm["phone"].value;
 
 
     var emailCheck = validateEmail(email);
     var userCheck = validateUser(userName, email);
-    var passwordCheck = validatePassword(password);
     var phoneCheck = validatePhone(phone);
 
-    if((emailCheck) && (userCheck) && passwordCheck && phoneCheck){
-        this.state.account.userName = userName;
-        this.state.account.email = email;
-        this.state.account.password = password;
-        this.state.account.type = "seller";
+    if(!emailCheck){
+      window.alert("Incorrect email format");
+    }
 
-        this.props.updateSeller(this.state.seller);
+    if((emailCheck) && (userCheck) && phoneCheck){
+
+        var account = {
+          userName : "",
+          email : "",
+          type : "", 
+          id : ""
+        }
+        account.userName = userName;
+        account.email = email;
+        account.type = "seller";
+        account.id = id;
+
+
+
+        this.props.updateSeller(account);
     }
 
 
   }
 
   render(){
+    if(first){
+      console.log("url ", url)
+      console.log("id ", id)
+      sellers = this.props.sellers.sellers;
 
-    return(
-        <div className="sellerDetail">
-            <h2>Seller Detail</h2>
-                <div>
-                </div>
-            {
-                <form name="myForm" onSubmit={this.handleUpdate}>
-                    <div className="form-group">
-                        <label htmlFor="userName">Name</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="userName"
-                            name="userName"
-                            autoComplete="off"
-                            value={this.state.seller.Name}
-                            />
-                    </div>
+      for(var i = 0; i < sellers.length; i++){
+        if(sellers[i]._id === id){
+          seller = sellers[i];
+          break;
+        }
+      }
+      first = false;
+      cont = true;
+      console.log("seller ", seller)
+    }
+    if(cont){
+      customers = this.props.customers.customers;
+      return(
+          <div className="sellerDetail">
+              <h2>Seller Detail</h2>
+                  <div>
+                  </div>
+              {
+                  <form name="myForm" onSubmit={this.handleUpdate}>
+                      <div className="form-group">
+                          <label htmlFor="userName">Name</label>
+                          <input
+                              type="text"
+                              className="form-control"
+                              id="userName"
+                              name="userName"
+                              autoComplete="off"
+                              //value={seller.userName}
+                              />
+                      </div>
 
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="email"
-                            name="email"
-                            autoComplete="off"
-                            value={this.state.seller.email}
-                            />
-                    </div>
+                      <div className="form-group">
+                          <label htmlFor="email">Email</label>
+                          <input
+                              type="text"
+                              className="form-control"
+                              id="email"
+                              name="email"
+                              autoComplete="off"
+                              //value={seller.email}
+                              />
+                      </div>
 
-                    <div className="form-group">
-                        <label htmlFor="phone">Phone Number</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="phone"
-                            name="phone"
-                            autoComplete="off"
-                            value={this.state.seller.phone}
-                            />
-                    </div>
+                      <div className="form-group">
+                          <label htmlFor="phone">Phone Number</label>
+                          <input
+                              type="text"
+                              className="form-control"
+                              id="phone"
+                              name="phone"
+                              autoComplete="off"
+                              //value={seller.phone}
+                              />
+                      </div>
 
-                    <button type="submit" className="btn btn-success btn-lg">
-                        UPDATE
-                    </button>
-               </form>
+                      <button type="submit" className="btn btn-success btn-lg">
+                          UPDATE
+                      </button>
+                </form>
 
-              }
-            
-        </div>
-    );
+                }
+              
+          </div>
+      );
+    }
+    else{
+      return(
+        <div></div>
+      );
+    }
   }
 }
 
 const validateUser = (userName, email) => {
-
   const API_URL = 'http://localhost:3001/api/';
-  var a = fetch(API_URL + 'customers/')
-  var b = fetch(API_URL + 'sellers/')
-  var c = fetch(API_URL + 'admins/')
-  console.log("a = ", a);
-  console.log("b = ", b);
-  console.log("c = ", c);
-  for(var i = 0; i < a.accounts.length; i++){
-      if((email == a.customers[i].email || email == b.sellers[i].email || email == c.admins[i].email) && (email !== this.state.sellers.email)){
+
+  const b = sellers;
+  const a = customers;
+
+  console.log("customers = ", customers);
+  console.log("sellers = ", sellers);
+
+  for(var i = 0; i < a.length ; i++){
+      if(email === a[i].email){
           window.alert("A user with the same Email already exists");
           return false;
       }
-      if((userName == a.customers[i].userName || userName == b.sellers[i].userName || userName == a.admins[i].userName) && (userName == this.state.sellers.userName)){
+      if(userName === a[i].userName){
           window.alert("A user with the same Username already exists");
           return false;
       }
   }
 
+  for(var i = 0; i < b.length ; i++){
+    if(email === b[i].email){
+        window.alert("A user with the same Email already exists");
+        return false;
+    }
+    if(userName === b[i].userName){
+        window.alert("A user with the same Username already exists");
+        return false;
+    }
+  }
+
   return true;
 }
+
 
 const validateEmail = (email) => {
   return String(email)
@@ -145,34 +205,17 @@ const validatePhone = (phone) => {
   return true;
 }
 
-const validatePassword = (password) => {
-  
-  if((String(password).length < 8)){
-      window.alert("Password needs to have atleast 8 characters");
-      return false;
-  }
-
-  var upper = String(password).toLowerCase();
-  if(String(password) == upper){
-      window.alert("Password needs to have atleast one Uppercase letter and one Lowercase letter");
-      return false;
-  }
-  if(! /[0-9]/.test(String(password))){
-      window.alert("Password needs to have atleast one number");
-      return false;
-  }
-  
-  return true;
-};
-
 const mapStateToProps = (state) => {
     return {
+      customers: state.customers,
       sellers: state.sellers
     }
   }
   const mapDispatchToProps = (dispatch) => {
     return {
-    updateSeller : seller => dispatch(updateSeller(seller))
+      getCustomers: () => dispatch(getCustomers()),
+      getSellers: () => dispatch(getSellers()),
+      updateSeller : seller => dispatch(updateSeller(seller))
     }
   }
   

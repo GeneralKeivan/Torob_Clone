@@ -59,7 +59,7 @@ export const updateCustomerRecent = (product, customerId) => {
         }
     }
 
-    customer.recents.push(product.link);
+    customer.recents.push({name:product.name, link:product.link});
     console.log("update customer ", customer);
     return (dispatch) => {
         return axios.put(API_URL + 'customers/' + customerId, customer)

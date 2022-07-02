@@ -14,7 +14,7 @@ var lowHighProducts = [];
 var highLowProducts = [];
 var recentProducts = [];
 const url = window.location.href.split('/');
-const id = url[5];
+const id = localStorage.getItem("customerId");
 var sortType = "none"
 var found = false;
 class Customer extends Component {
@@ -27,6 +27,20 @@ class Customer extends Component {
     }
 
     componentDidMount() {
+        sortType = sessionStorage.getItem("type")
+        if(sortType === null){
+          sortType = false;
+        }
+        found = sessionStorage.getItem("found")
+        if(found === null){
+          found = false;
+        }
+        searchedProducts = JSON.parse(localStorage.getItem("searchedProducts"))
+        localStorage.removeItem("searchedProducts")
+        if(searchedProducts === null){
+          searchedProducts = [];
+        }
+
         this.props.getProducts();
         console.log("broken url: ", url)
         console.log("id: ", id)
@@ -48,12 +62,14 @@ class Customer extends Component {
         console.log("this.state ", this.state)
         console.log("this.props ", this.props)
     
-    
+        searchedProducts = [];
         var searchBar = document.forms["myForm"]["searchBar"].value;
         //might need to add a .products to the end of fetch
+        console.log("products", products)
         for(var i = 0; i < products.length; i++){
-            if(products[i].name.includes(searchBar) || products[i].model.inludes(searchBar) || products[i].brand.inludes(searchBar)){
+            if(String(products[i].name).includes(searchBar) || String(products[i].model).includes(searchBar) || String(products[i].brand).includes(searchBar)){
                 searchedProducts.push(products[i])
+                found = true;
             }
         }
 
@@ -65,6 +81,11 @@ class Customer extends Component {
         lowHighProducts = searchedProducts;
         highLowProducts = searchedProducts;
         recentProducts  = searchedProducts;
+
+        console.log("found ", found)
+        console.log("low to high ", lowHighProducts)
+        console.log("high to low ", highLowProducts)
+        console.log("recents ", recentProducts)
 
         //this.props.updateSeller(this.state.seller);
         lowHighProducts.sort(function (x, y) {
@@ -80,11 +101,17 @@ class Customer extends Component {
             let b = new Date(y.last_updated)
             return b - a
         });
-
+        sessionStorage.setItem("found", true)
+        localStorage.setItem("searchedProducts", JSON.stringify(searchedProducts))
+        window.location.reload();
     }
 
     sort(t){
         sortType = t;
+        sessionStorage.setItem("type", sortType)
+        sessionStorage.setItem("found", true)
+        localStorage.setItem("searchedProducts", JSON.stringify(searchedProducts))
+        window.location.reload();
     }
 
     render() {
@@ -266,7 +293,7 @@ class Customer extends Component {
                 <div className="row">
                     <div className="col-lg-12 text-center">
                     {
-                        searchedProducts.length === 0 ? 'Search the name of the product you want' : (sortType === "low" ? productLowHigh : (sortType ==="high" ? productHighLow : (sortType === "recent" ? productRecent : productList)))
+                        !found ? 'Search the name of the product you want' : (sortType === "low" ? productLowHigh : (sortType ==="high" ? productHighLow : (sortType === "recent" ? productRecent : productList)))
                     }
                     </div>
                 </div>

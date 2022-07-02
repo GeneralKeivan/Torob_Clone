@@ -10,10 +10,12 @@ var version = true;
 var reviewMain = "";
 var sellers;
 var seller;
+var store;
 const sellerId = localStorage.getItem("sellerId")
+var storeId = localStorage.getItem("storeId");
 var first;
 var cont = false;
-class SellerReviews extends Component {
+class SellerViewStore extends Component {
 
     constructor(props){
         super(props);
@@ -53,30 +55,38 @@ class SellerReviews extends Component {
             }
             first = false;
             cont = true;
-            console.log("sellers ", seller)
-            console.log("seller ", seller)
+            console.log("view sellers ", seller)
+            console.log("view seller ", seller)
+            console.log("view storeId ", storeId)
+
+            store = seller.store[storeId];
+            console.log("view store ", store)
         }
 
         if(cont){
-            const  reviewList = (
+            const  productList = (
                 <div>
                     <div className="col-lg-12 table-responsive">
                         <table className="table table-striped">
                             <thead>
                             <tr>
-                                <th scope="col">Name</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">See Review</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Model</th>
+                                <th scope="col">Brand</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Link</th>
                             </tr>
                             </thead>
                             <tbody>
 
                             {
-                                seller.reviews.map((review,index) =>
+                                store.products.map((product,index) =>
                                     <tr key={index}>
-                                        <td>{review.name}</td>
-                                        <td>{review.type}</td>
-                                        <td> <i className="fa fa-edit btn btn-info" onClick={() => this.showReview(review)}> </i>   &nbsp; </td>
+                                        <td>{product.name}</td>
+                                        <td>{product.model}</td>
+                                        <td>{product.brand}</td>
+                                        <td>{product.price}</td>
+                                        <td>{product.link}</td>
                                     </tr>
                                 )
                             }
@@ -87,21 +97,17 @@ class SellerReviews extends Component {
                 </div>
             )
 
-            const  reviewText = (
-                <div>
-                    <div>{reviewMain}</div>
-                    <div><i className="fa fa-edit btn btn-info" onClick={() => this.backToView()}> </i></div>
-                </div>
-            )
-
             return (
             <div className="row">
                 <div className="col-lg-12">
-                    <Link to={`/accounts/sellers/` + sellerId} ><button className="btn btn-success pull-right" >Back</button></Link>
+                    <Link to={`/accounts/sellers/` + sellerId + "/stores"} ><button className="btn btn-info pull-right" >Back</button></Link>
+                </div>
+                <div className="col-lg-12">
+                    <Link to={`/accounts/sellers/` + sellerId + "/stores/" + storeId + "/product/new"} ><button className="btn btn-success pull-right" >New Product</button></Link>
                 </div>
                 <div className="col-lg-12 text-center">
                     {
-                        version ? reviewList :reviewText
+                        store.products.length === 0 ? "This store has no products" :productList
                     }
                 </div>
             </div>
@@ -123,4 +129,4 @@ const mapDispatchToProps = (dispatch) => ({
     getSellers: () => dispatch(getSellers())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SellerReviews);
+export default connect(mapStateToProps, mapDispatchToProps)(SellerViewStore);

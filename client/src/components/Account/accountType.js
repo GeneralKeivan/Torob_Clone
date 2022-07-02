@@ -45,7 +45,7 @@ class AccountType extends React.Component {
                 <label for="seller">Seller</label><br/>
 
                 <button type="submit" className="btn btn-success btn-lg">
-                Sign Up
+                  Sign Up
                 </button>
 
             </form>

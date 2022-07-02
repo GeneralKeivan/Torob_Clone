@@ -118,6 +118,7 @@ class LogIn extends React.Component {
             if(account.password === c[i].password){
                 console.log("log in to customer : " + c[i].userName)
                 history.push('/accounts/customers/' + c[i]._id)
+                localStorage.setItem("customerId", c[i]._id);
                 correct = "customer";
                 break;
             }
@@ -129,6 +130,7 @@ class LogIn extends React.Component {
             if(account.password === s[i].password){
                 console.log("log in to seller : " + s[i].userName)
                 history.push('/accounts/sellers/' + s[i]._id)
+                localStorage.setItem("sellerId", s[i]._id);
                 correct = "seller";
                 break;
             }

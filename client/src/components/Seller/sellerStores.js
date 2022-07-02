@@ -4,28 +4,28 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types'
 import {connect } from 'react-redux';
-import history from "../../history"
-import sellerChange from './sellerChange';
 import {getSellers} from '../../actions/sellerAction'
+import history from "../../history"
 
-var sellerId;
-var sellerIndex;
+
+var sellers;
+var seller;
+var stores;
+const sellerId = localStorage.getItem("sellerId")
+
+var first;
+var cont = false;
 class SellerStores extends Component {
+
     constructor(props){
         super(props);
+        const location = history.location
+        this.state = location.state;
     }
 
     componentDidMount() {
-        sellerId = window.location.href.split('/')[4];
         this.props.getSellers();
-
-        for(var i = 0; i < this.props.sellers.length; i++){
-            if(sellerId === this.props.sellers[i]._id){
-                sellerIndex = i;
-                break;
-            }
-        }
-
+        first = true;
     }
     
     static propTypes = {
@@ -33,50 +33,78 @@ class SellerStores extends Component {
         sellers: PropTypes.object.isRequired
     }
 
-    render() {    
-
-        const stores = this.props.sellers[sellerIndex].stores;
-
-        const  storeList = (
-            <div>
-                <div className="col-lg-12 table-responsive">
-                    <table className="table table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col">Store Name</th>
-                            <th scope="col">View Store</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-            
-                        {
-                        stores.map((store,index) =>
-                            <tr key={index}>
-                            <td>{store.name}</td>
-                            <td> <i className="fa fa-edit btn btn-info" onClick={() => this.viewStore(store)}> </i></td>   &nbsp;
-                            </tr>
-                        )
-                        }
-                    
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-      )
-        return (
-          <div className="row">
-            <div className="col-lg-12">
-              <Link to={'/account/seller/' + sellerId + '/stores/new'} ><button className="btn btn-success pull-right" >New Store</button></Link>
-            </div>
-            <div className="col-lg-12 text-center">
-            {
-              stores.length === 0 ? 'No Stores Create New Stores' :storeList
-            }
-            </div>
-          </div>
-        );
+    viewStore = (store) => {
+        console.log("this.state ", store);
+        localStorage.setItem("sellerId", sellerId);
+        localStorage.setItem("storeId", store.id);
+        history.push("/accounts/sellers/" + sellerId + "/stores/" + store.id)
     }
 
+    render() { 
+
+        if(first){
+            sellers = this.props.sellers.sellers;
+
+            for(var i = 0; i < sellers.length; i++){
+              if(sellers[i]._id === sellerId){
+                seller = sellers[i];
+                break;
+              }
+            }
+            first = false;
+            cont = true;
+            console.log("sellers ", seller)
+            console.log("seller ", seller)
+
+            stores = seller.store;
+        }
+        if(cont){
+            const  storeList = (
+                <div>
+                    <div className="col-lg-12 table-responsive">
+                        <table className="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Store Name</th>
+                                <th scope="col">View Store</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                
+                            {
+                            stores.map((store,index) =>
+                                <tr key={index}>
+                                <td>{store.name}</td>
+                                <td> <i className="fa fa-edit btn btn-info" onClick={() => this.viewStore(store)}> </i></td>   &nbsp;
+                                </tr>
+                            )
+                            }
+                        
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )
+
+            return (
+            <div className="row">
+                <div className="col-lg-12">
+                    <Link to={'/accounts/sellers/' + sellerId + '/stores/new'} ><button className="btn btn-success pull-right" >New Store</button></Link>
+                </div>
+                <div className="col-lg-12 text-center">
+                {
+                    stores.length === 0 ? 'No Stores Create New Stores' :storeList
+                }
+                </div>
+            </div>
+            );
+        }
+        else{
+            return(
+                <div></div>
+            );
+        }
+    }
 }
 
 const mapStateToProps = (state) => ({

@@ -37,8 +37,11 @@ import Sellers                                  from './components/Seller/seller
 import SellerChange                             from './components/Seller/sellerChange'
 import SellerReviews                            from './components/Seller/sellerReviews'
 import SellerStores                             from './components/Seller/sellerStores'
+import SellerViewStore                          from './components/Seller/sellerViewStore'
 import SellerNewStores                          from './components/Seller/sellerNewStores'
 import SellerStoresNewProduct                   from './components/Seller/sellerStoresNewProduct'
+import SellerStoresNewProductExisting           from './components/Seller/sellerStoresNewProductExisting'
+import SellerStoresNewProductNew                from './components/Seller/sellerStoresNewProductNew'
 
 
 
@@ -82,11 +85,14 @@ const routing = () =>(
         <Route exact path="/accounts/customers/:id/recents" component={CustomerRecents} /> 
 
 
-        <Route exact path="/accounts/sellers/:id/change" component={SellerChange} /> 
+        <Route exact path="/accounts/sellers/:id/change" render = {props => <SellerChange {...props}/>} /> 
         <Route exact path="/accounts/sellers/:id/reviews" component={SellerReviews} /> 
         <Route exact path="/accounts/sellers/:id/stores" component={SellerStores} /> 
-        <Route exact path="/accounts/sellers/:id/stores/new" component={SellerNewStores} /> 
+        <Route exact path="/accounts/sellers/:id/stores/new" render = {props => <SellerNewStores {...props}/>} /> 
+        <Route exact path="/accounts/sellers/:id/stores/:id" component={SellerViewStore} /> 
         <Route exact path="/accounts/sellers/:id/stores/:id/product/new" component={SellerStoresNewProduct} /> 
+        <Route exact path="/accounts/sellers/:id/stores/:id/product/new/exists" render = {props => <SellerStoresNewProductExisting {...props}/>} /> 
+        <Route exact path="/accounts/sellers/:id/stores/:id/product/new/new" render = {props => <SellerStoresNewProductNew {...props}/>} /> 
 
 
 

@@ -56,7 +56,7 @@ Account.prototype.addSeller = (req,res) => {
         if(err){
             res.send(err);
         }else{
-            res.send({'success':true,'message':'Admin fetched successfully',result});
+            res.send({'success':true,'message':'Seller fetched successfully',result});
         }
     })
 }
@@ -64,7 +64,7 @@ Account.prototype.addSeller = (req,res) => {
 
 Account.prototype.updateSeller = (req,res) => {
     let id = req.body._id;
-    sellerModel.findByIdAndUpdate(id,{ userName : req.body.userName, email : req.body.email, phone : req.body.phone, stores : req.body.stores, reviews : req.body.reviews},(err,result) => {
+    sellerModel.findByIdAndUpdate(id,{ userName : req.body.userName, email : req.body.email, phone : req.body.phone, store : req.body.store, reviews : req.body.reviews},(err,result) => {
         if(err){
             res.send(err);
         }else{
@@ -109,7 +109,7 @@ Account.prototype.addProduct = (req, res) => {
         if(err){
             res.send(err);
         }else{
-            res.send({'success':true,'message':'Admin fetched successfully',result});
+            res.send({'success':true,'message':'Product fetched successfully',result});
         }
     })
 }

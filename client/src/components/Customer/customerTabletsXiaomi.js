@@ -13,9 +13,10 @@ var lowHighProducts = [];
 var highLowProducts = [];
 var recentProducts = [];
 const url = window.location.href.split('/');
-const id = url[5];
+const id = localStorage.getItem("customerId")
 var sortType = "none"
 var first;
+var found = false;
 class CustomerTabletXiaomi extends Component {
 
     constructor(props){
@@ -26,6 +27,21 @@ class CustomerTabletXiaomi extends Component {
     }
 
     componentDidMount() {
+      sortType = sessionStorage.getItem("type")
+      if(sortType === null){
+        sortType = false;
+      }
+      found = sessionStorage.getItem("found")
+      if(found === null){
+        found = false;
+      }
+      searchedProducts = JSON.parse(localStorage.getItem("searchedProducts"))
+      localStorage.removeItem("searchedProducts")
+      if(searchedProducts === null){
+        searchedProducts = [];
+      }
+
+
       this.props.getProducts();
       console.log("broken url: ", url)
       console.log("id: ", id)
@@ -39,7 +55,8 @@ class CustomerTabletXiaomi extends Component {
 
     viewProduct = (viewProductDetail) => {
         console.log("this.state ", viewProductDetail);
-        history.push('accounts/customers/' + id + "/product/" + viewProductDetail._id, {'product' : viewProductDetail})
+        localStorage.setItem("productId", viewProductDetail._id);
+        history.push('/accounts/customers/' + id + "/product/" + viewProductDetail._id, {'product' : viewProductDetail})
     }
 
 
@@ -48,12 +65,12 @@ class CustomerTabletXiaomi extends Component {
         console.log("this.state ", this.state)
         console.log("this.props ", this.props)
     
-    
+        searchedProducts = [];
         var searchBar = document.forms.myForm.searchBar.value;
 
         //might need to add a .products to the end of fetch
         for(var i = 0; i < products.length; i++){
-            if(products[i].name.inludes(searchBar) && products[i].brand === "xiaomi" && products[i].model === "tablet"){
+            if(String(products[i].name.includes(searchBar)) && products[i].brand === "xiaomi" && products[i].model === "tablet"){
                 searchedProducts.push(products[i])
             }
         }
@@ -81,11 +98,15 @@ class CustomerTabletXiaomi extends Component {
     
     sort(t){
         sortType = t;
+        sessionStorage.setItem("type", sortType)
+        sessionStorage.setItem("found", true)
+        localStorage.setItem("searchedProducts", JSON.stringify(searchedProducts))
+        window.location.reload();
     }
 
     specificTablet(name){
         console.log("this.state ", name);
-        history.push('accounts/customers/' + id + "/product/tablets/" + name)
+        history.push('/accounts/customers/' + id + "/product/tablets/" + name)
     }
 
     render() {
@@ -333,7 +354,7 @@ class CustomerTabletXiaomi extends Component {
                 <div className="row">
                     <div className="col-lg-12 text-center">
                     {
-                        searchedProducts.length === 0 ? productTablet : (sortType === "low" ? productLowHigh : (sortType ==="high" ? productHighLow : (sortType === "recent" ? productRecent : productList)))
+                        !found ? productTablet : (sortType === "low" ? productLowHigh : (sortType ==="high" ? productHighLow : (sortType === "recent" ? productRecent : productList)))
                     }
                     </div>
                 </div>

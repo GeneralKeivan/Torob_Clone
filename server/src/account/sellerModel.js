@@ -10,7 +10,6 @@ let sellerSchema = new Schema({
     password : {type:String, default : null},
     email    : {type:String, default : null},
     phone    : {type:Number, default : null},
-    count    : {type:Number, default : null},
     store    : [
         {
             name        : {type:String, default : null, unique : true},

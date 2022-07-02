@@ -9,8 +9,8 @@ import { getProducts } from '../../actions/productAction';
 import { updateCustomerFavorite, updateCustomerRecent } from '../../actions/customerAction';
 
 
-const customerId = window.location.href.split('/')[5];
-const productId = window.location.href.split('/')[7];
+const customerId = localStorage.getItem("customerId");
+const productId = localStorage.getItem("productId");
 var products, product;
 var first;
 var cont = false;
@@ -19,7 +19,6 @@ class CustomerProduct extends Component {
         super(props);
         const location = history.location
         this.state = location.state;
-        this.handleUpdate = this.handleUpdate.bind(this);
     }
 
     componentDidMount() {
@@ -30,8 +29,6 @@ class CustomerProduct extends Component {
     }
 
     static propTypes = {
-        getCustomers: PropTypes.func.isRequired,
-        customers: PropTypes.object.isRequired,
         updateCustomerFavorite: PropTypes.func.isRequired,
         updateCustomerRecent: PropTypes.func.isRequired
     }
@@ -40,6 +37,7 @@ class CustomerProduct extends Component {
     }
 
     reviewStore(sellerId){
+        localStorage.setItem("sellerId", sellerId)
         history.push('/accounts/customers/' + customerId + '/sellers/' + sellerId)
     }
 
@@ -48,6 +46,7 @@ class CustomerProduct extends Component {
     render() {    
 
         if(first){
+            products = this.props.products;
             for(var i = 0; i < products.length; i++){
                 if(products[i]._id === productId){
                     product = products[i];
@@ -58,70 +57,73 @@ class CustomerProduct extends Component {
             cont = true;
             console.log("product ", product)
         }
-        const  productList = (
-            <div>
-                <div>
-                    {
-                    products.map((product,index) =>
+        else{
+            if(cont){
+                const  productList = (
+                    <div>
                         <div>
-                            <div>Name : {product.name}</div>
-                            <div>Size : {product.size}</div>
-                            <div>Weight : {product.weight}</div>
-                            <div>Battery Power : {product.battery}</div>
-                            <div>Screen Type : {product.screen}</div>
+                            {
+                            products.map((product,index) =>
+                                <div>
+                                    <div>Name : {product.name}</div>
+                                    <div>Size : {product.size}</div>
+                                    <div>Weight : {product.weight}</div>
+                                    <div>Battery Power : {product.battery}</div>
+                                    <div>Screen Type : {product.screen}</div>
+                                </div>
+                            )
+                            }
+                            <i className="fa fa-edit btn btn-info" onClick={() => this.favoriteProduct()}>Favorite</i>
                         </div>
-                    )
-                    }
-                    <i className="fa fa-edit btn btn-info" onClick={() => this.favoriteProduct()}>Favorite</i>
-                </div>
-                <div className="col-lg-12 table-responsive">
-                    <table className="table table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col">Price</th>
-                            <th scope="col">Seller</th>
-                            <th scope="col">Link</th>
-                            <th scope="col">Review</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-            
-                        {
-                        products.map((product,index) =>
-                            <tr key={index}>
-                            <td>{product.price}</td>
-                            <td>{product.seller.name}</td>
-                            <td>{product.link}</td>
-                            <td> <i className="fa fa-edit btn btn-info" onClick={() => this.reviewStore(product.seller._id)}>Review</i></td>   &nbsp;
-                            </tr>
-                        )
-                        }
+                        <div className="col-lg-12 table-responsive">
+                            <table className="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Seller</th>
+                                    <th scope="col">Link</th>
+                                    <th scope="col">Review</th>
+                                </tr>
+                                </thead>
+                                <tbody>
                     
-                        </tbody>
-                    </table>
+                                {
+                                products.map((product,index) =>
+                                    <tr key={index}>
+                                    <td>{product.price}</td>
+                                    <td>{product.seller.name}</td>
+                                    <td>{product.link}</td>
+                                    <td> <i className="fa fa-edit btn btn-info" onClick={() => this.reviewStore(product.seller._id)}>Review</i></td>   &nbsp;
+                                    </tr>
+                                )
+                                }
+                            
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            )
+
+
+            return (
+            <div className="row">
+                <div className="col-lg-12">
+
+                </div>
+                <div className="col-lg-12 text-center">
+                {
+                products.length === 0 ? 'No Products' :productList
+                }
                 </div>
             </div>
-      )
-
-      if(cont){
-        return (
-          <div className="row">
-            <div className="col-lg-12">
-
-            </div>
-            <div className="col-lg-12 text-center">
-            {
-              products.length === 0 ? 'No Products' :productList
-            }
-            </div>
-          </div>
-        );
-      }
-      else{
-        return(
-            <div></div>
-        );
-      }
+            );
+        }
+        else{
+            return(
+                <div></div>
+            );
+        }
+        }
     }
 
 }
