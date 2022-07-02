@@ -36,6 +36,7 @@ class SellerStores extends Component {
     viewStore = (store) => {
         console.log("this.state ", store);
         localStorage.setItem("sellerId", sellerId);
+        console.log("this.state id ", store.id);
         localStorage.setItem("storeId", store.id);
         history.push("/accounts/sellers/" + sellerId + "/stores/" + store.id)
     }

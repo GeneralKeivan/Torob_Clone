@@ -12,7 +12,7 @@ var sellers;
 var seller;
 var store;
 const sellerId = localStorage.getItem("sellerId")
-var storeId = localStorage.getItem("storeId");
+var storeId;
 var first;
 var cont = false;
 class SellerViewStore extends Component {
@@ -57,9 +57,11 @@ class SellerViewStore extends Component {
             cont = true;
             console.log("view sellers ", seller)
             console.log("view seller ", seller)
+            storeId = localStorage.getItem("storeId");
+            localStorage.removeItem("storeId");
             console.log("view storeId ", storeId)
 
-            store = seller.store[storeId];
+            store = seller.store[storeId - 1];
             console.log("view store ", store)
         }
 
