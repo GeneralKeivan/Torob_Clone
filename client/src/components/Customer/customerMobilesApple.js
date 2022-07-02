@@ -28,19 +28,40 @@ class CustomerMobileApple extends Component {
 
     componentDidMount() {
       sortType = sessionStorage.getItem("type")
-      if(sortType === null){
-        sortType = false;
-      }
       found = sessionStorage.getItem("found")
-      if(found === null){
+      if(found === "true"){
+        found = true;
+      }
+      else{
         found = false;
       }
+      sessionStorage.removeItem("found");
+      sessionStorage.removeItem("type");
+
       searchedProducts = JSON.parse(localStorage.getItem("searchedProducts"))
       localStorage.removeItem("searchedProducts")
+      console.log("Got from storage ", searchedProducts)
+      console.log("sortType ", sortType);
+      console.log("found ", found)
       if(searchedProducts === null){
         searchedProducts = [];
-      } 
+      }
 
+      lowHighProducts = searchedProducts.sort(function (x, y) {
+        console.log(x, y)
+        return parseInt(x.cheap) - parseInt(y.cheap);
+      });
+
+      highLowProducts = searchedProducts.sort(function (x, y) {
+          return parseInt(y.cheap) - parseInt(x.cheap);
+      });
+
+      recentProducts = searchedProducts.sort(function (x, y) {
+          let a = new Date(x.last_updated)
+          let b = new Date(y.last_updated)
+          return b - a
+      });
+      
       this.props.getProducts();
       console.log("broken url: ", url)
       console.log("id: ", id)
@@ -65,13 +86,17 @@ class CustomerMobileApple extends Component {
         console.log("this.props ", this.props)
     
         searchedProducts = [];
-        var searchBar = document.forms.myForm.searchBar.value;
+        var searchBar = String(document.forms["myForm"]["searchBar"].value).toLowerCase();
 
         //might need to add a .products to the end of fetch
         for(var i = 0; i < products.length; i++){
-            if(String(products[i].name.includes(searchBar)) && products[i].brand === "apple" && products[i].model === "mobile"){
+            if(String(products[i].name.toLowerCase().includes(searchBar)) && products[i].brand === "apple" && products[i].model === "mobile"){
                 searchedProducts.push(products[i])
             }
+        }
+
+        if(searchedProducts.length === 0){
+          found = false;
         }
 
         lowHighProducts = searchedProducts;
@@ -92,7 +117,9 @@ class CustomerMobileApple extends Component {
             let b = new Date(y.last_updated)
             return b - a
         });
-
+        sessionStorage.setItem("found", true)
+        localStorage.setItem("searchedProducts", JSON.stringify(searchedProducts))
+        window.location.reload();
     }
 
     sort(t){

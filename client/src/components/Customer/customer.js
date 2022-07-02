@@ -79,7 +79,7 @@ class Customer extends Component {
 
     viewProduct = (viewProductDetail) => {
         console.log("this.state ", viewProductDetail);
-        history.push('accounts/customers/' + id + "/product/" + viewProductDetail._id, {'product' : viewProductDetail})
+        history.push('/accounts/customers/' + id + "/product/" + viewProductDetail._id, {'product' : viewProductDetail})
     }
 
 
