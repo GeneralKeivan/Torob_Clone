@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import history from '../../history'
 
 var customers, sellers;
+
 class LogIn extends React.Component {
   constructor(props){
       super(props);
@@ -125,6 +126,7 @@ class LogIn extends React.Component {
         }
     }
   
+    console.log("Looking for account info ", account)
     for(var i = 0; i < s.length; i++){
         if(account.userName === s[i].userName || account.email === s[i].email){
             if(account.password === s[i].password){

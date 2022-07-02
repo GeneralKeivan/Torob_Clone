@@ -76,8 +76,8 @@ Account.prototype.updateSeller = (req,res) => {
 Account.prototype.updateCustomer = (req,res) => {
     let id = req.body._id;
     
-    while(req.body.favorites.length > 5){
-        req.body.favorites.shift();
+    while(req.body.recents.length > 5){
+        req.body.recents.shift();
     }
 
     customerModel.findByIdAndUpdate(id,{ favorites : req.body.favorites, recents : req.body.recents},(err,result) => {
@@ -119,7 +119,7 @@ Account.prototype.updateProduct = (req, res) => {
 
     var prices = [];
 
-    for(var i = 0; i < req.body.sellers.id; i++){
+    for(var i = 0; i < req.body.sellers.length; i++){
         prices.push(parseInt(sellers[i].price))
     }
     prices = prices.sort(function(a, b){

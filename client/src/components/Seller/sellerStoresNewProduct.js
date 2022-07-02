@@ -11,32 +11,9 @@ var sellerId = localStorage.getItem("sellerId")
 var seller, sellers;
 var storeId = localStorage.getItem("storeId")
 var products;
-var selected = false;
-var existingProduct;
-var modelButtons, radioButtons;
 var first;
 var cont = false;
-var product = {
-    name : "",
-    id : "",
-    model : "",
-    brand : "",
-    last_updated : "",
-    cheap : "",
-    expensive : "",
-    sellers : [
-        {
-            name : "",
-            phone : "",
-            price : "",
-            link : ""
-        }
-    ],
-    size : "",
-    weight : "",
-    battery : "",
-    screen : ""
-}
+
 class SellerStoresNewProduct extends React.Component {
     constructor(props){
         super(props);

@@ -14,7 +14,6 @@ var products;
 var first;
 var cont = false;
 
-
 class SellerStoresNewProductNew extends React.Component {
     constructor(props){
         super(props);
@@ -51,12 +50,6 @@ class SellerStoresNewProductNew extends React.Component {
             cheap : "",
             expensive : "",
             sellers : [
-                {
-                    name : "",
-                    phone : "",
-                    price : "",
-                    link : ""
-                }
             ],
             size : "",
             weight : "",
@@ -89,6 +82,7 @@ class SellerStoresNewProductNew extends React.Component {
         product.model = model;
         product.brand = brand;
 
+        storeId = localStorage.getItem("storeId")
         if(model !== "mobile" && model !== "tablet" && model !== "laptop"){
             window.alert("Model can only be mobile, tablet or laptop")
         }
@@ -105,7 +99,7 @@ class SellerStoresNewProductNew extends React.Component {
                         console.log("product : ", product)
                         this.props.createProduct(product, sellerId, storeId)
                         console.log("This store ", seller.store)
-                        console.log("This store Index ", parseInt(storeId) - 1)
+                        console.log("This store id ", storeId)
 
                         seller.store[parseInt(storeId) - 1].products.push({name:product.name, model:product.model, brand:product.brand, price:price, link:link})
                         this.props.updateSeller(seller);
@@ -123,10 +117,12 @@ class SellerStoresNewProductNew extends React.Component {
                     else{
                         console.log("product : ", product)
                         this.props.createProduct(product, sellerId, storeId)
+                        console.log("This store ", seller.store)
+                        console.log("This store Id ", storeId)
 
                         seller.store[parseInt(storeId) - 1].products.push({name:product.name, model:product.model, brand:product.brand, price:price, link:link})
                         console.log("This store ", seller.store)
-                        console.log("This store Index ", parseInt(storeId) - 1)
+                        console.log("This store Index ", parseInt(storeId))
                         this.props.updateSeller(seller);
                     }
                 }

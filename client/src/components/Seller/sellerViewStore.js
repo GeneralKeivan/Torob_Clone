@@ -12,7 +12,8 @@ var sellers;
 var seller;
 var store;
 const sellerId = localStorage.getItem("sellerId")
-var storeId;
+var storeId = localStorage.getItem("storeId")
+
 var first;
 var cont = false;
 class SellerViewStore extends Component {
@@ -53,12 +54,14 @@ class SellerViewStore extends Component {
                 break;
               }
             }
+
+            store = seller.store[parseInt(storeId) - 1]
             first = false;
             cont = true;
             console.log("view sellers ", seller)
             console.log("view seller ", seller)
             storeId = localStorage.getItem("storeId");
-            localStorage.removeItem("storeId");
+            //localStorage.removeItem("storeId");
             console.log("view storeId ", storeId)
 
             store = seller.store[storeId - 1];

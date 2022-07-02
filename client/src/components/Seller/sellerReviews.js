@@ -32,12 +32,16 @@ class SellerReviews extends Component {
     }
 
     showReview(review){
-        reviewMain = review.text;
-        version = false;
-    }
+        var x = document.getElementById("review");
+        console.log(x)
+        if (x.style.display !== 'none') {
+            x.style.display = 'none';
+        }
+        else {
+            x.style.display = 'block';
+            x.innerHTML = review.text;
+        }
 
-    backToView(){
-        version = true;
     }
 
     render() {
@@ -59,7 +63,7 @@ class SellerReviews extends Component {
 
         if(cont){
             const  reviewList = (
-                <div>
+                <div id="rTable">
                     <div className="col-lg-12 table-responsive">
                         <table className="table table-striped">
                             <thead>
@@ -88,9 +92,9 @@ class SellerReviews extends Component {
             )
 
             const  reviewText = (
-                <div>
-                    <div>{reviewMain}</div>
-                    <div><i className="fa fa-edit btn btn-info" onClick={() => this.backToView()}> </i></div>
+                <div id="review">
+                    
+                
                 </div>
             )
 
@@ -99,10 +103,12 @@ class SellerReviews extends Component {
                 <div className="col-lg-12">
                     <Link to={`/accounts/sellers/` + sellerId} ><button className="btn btn-success pull-right" >Back</button></Link>
                 </div>
-                <div className="col-lg-12 text-center">
-                    {
-                        version ? reviewList :reviewText
-                    }
+                <div className="col-lg-12 text-center" id="change">
+                    {reviewList}
+                    {reviewText}
+                    <br></br>
+                    <br></br>
+                    <br></br>
                 </div>
             </div>
             );

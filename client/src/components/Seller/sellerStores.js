@@ -11,7 +11,7 @@ import history from "../../history"
 var sellers;
 var seller;
 var stores;
-const sellerId = localStorage.getItem("sellerId")
+var sellerId = localStorage.getItem("sellerId")
 
 var first;
 var cont = false;
@@ -45,7 +45,7 @@ class SellerStores extends Component {
 
         if(first){
             sellers = this.props.sellers.sellers;
-
+            sellerId = localStorage.getItem("sellerId")
             for(var i = 0; i < sellers.length; i++){
               if(sellers[i]._id === sellerId){
                 seller = sellers[i];

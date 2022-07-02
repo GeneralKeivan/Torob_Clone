@@ -8,6 +8,7 @@ import history from "../../history"
 
 const url = window.location.href.split('/');
 const id = localStorage.getItem("sellerId");
+//localStorage.removeItem("storeId")
 class Sellers extends Component {
 
     constructor(props){

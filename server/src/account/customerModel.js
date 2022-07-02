@@ -11,14 +11,14 @@ let customerSchema = new Schema({
     email    : {type:String, default : null},
     favorites: [
         {
-            name        : {type:String, default : null, unique : true},
-            link        : {type:String, default : null, unique : true},
+            name        : {type:String, default : null,},
+            id          : {type:String, default : null},
         }
     ],
     recents  : [
         {
-            name        : {type:String, default : null, unique : true},
-            link        : {type:String, default : null, unique : true},
+            name        : {type:String, default : null,},
+            id          : {type:String, default : null},
         }
     ],
 },{timestamps : true});

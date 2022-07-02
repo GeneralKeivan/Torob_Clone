@@ -7,7 +7,7 @@ import history from "../../history"
 import { getCustomers } from '../../actions/customerAction';
 
 const url = window.location.href.split('/');
-const id = localStorage.getItem("customerId");
+const customerId = localStorage.getItem("customerId");
 var first;
 var customers;
 var customer;
@@ -24,7 +24,7 @@ class CustomerRecents extends Component {
         this.props.getCustomers();
         console.log("props : ", this.props)
         console.log("broken url: ", url)
-        console.log("id: ", id)
+        console.log("id: ", customerId)
         first = true;
     }
     
@@ -33,19 +33,17 @@ class CustomerRecents extends Component {
         customers: PropTypes.object.isRequired
     }
 
-    viewProduct(favorite){
-        var spl = favorite.link.split("/")
-        var productId = spl.slice(-1);
+    viewProduct(recent){
 
-        history.push("accounts/customers/" + this.props.customer._id + "/products/" + productId)
+        history.push("accounts/customers/" + customerId + "/products/" + recent._id)
     }
 
     render() {    
         customers = this.props.customers.customers;
         if(first){
-            console.log("id : ", id)
+            console.log("id : ", customerId)
             for(var i = 0; i < customers.length; i++){
-                if(customers[i]._id === id){
+                if(customers[i]._id === customerId){
                     customer = customers[i];
                     break;
                 }

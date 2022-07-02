@@ -11,7 +11,7 @@ router.get('/',controller.getCustomers);
 
 router.post('/',controller.addCustomer);
 
-router.put('/:id', controller.updateCustomer)
+router.put('/', controller.updateCustomer)
 module.exports = router;
 
 

@@ -256,7 +256,7 @@ class CustomerLaptops extends Component {
                     <tr>
                       <th scope="col">Name</th>
                       <th scope="col">Price Range</th>
-                      <th scope="col">Number of Sellers</th>
+                      <th scope="col">Number of Sellers - 1</th>
                       <th scope="col"></th>
 
                     </tr>

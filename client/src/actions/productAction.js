@@ -25,20 +25,20 @@ export const createProduct = (product, sellerId, storeId) => {
                 .then((res) => {
                     console.log("response ", res);
                     dispatch({ type: ADD_PRODUCT, payload : res.data.result })
-                    history.push('accounts/sellers/' + sellerId + '/stores/' + storeId)
+                    history.push("/accounts/sellers/" + sellerId + "/stores/" + storeId)
 
                 });
         }
 }
 
 export const updateProduct = (product, sellerId, storeId) => {
-    console.log("udpate product ", product);
+    console.log("update product ", product);
     return (dispatch) => {
         return axios.put(API_URL + 'products/', product)
             .then((res) => {
                 console.log("response ", res);
                 
-                history.push(`/accounts/sellers/` + sellerId + "/stores/" + storeId)
+                history.push("/accounts/sellers/" + sellerId + "/stores/" + storeId)
             });
     }
 }

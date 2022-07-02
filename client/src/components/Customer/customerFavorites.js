@@ -7,7 +7,7 @@ import history from "../../history"
 import { getCustomers } from '../../actions/customerAction';
 
 const url = window.location.href.split('/');
-const id = localStorage.getItem("customerId");
+const customerId = localStorage.getItem("customerId");
 var first;
 var customers;
 var customer;
@@ -23,8 +23,6 @@ class CustomerFavorites extends Component {
     componentDidMount() {
         this.props.getCustomers();
         console.log("props : ", this.props)
-        console.log("broken url: ", url)
-        console.log("id: ", id)
         first = true;
     }
     
@@ -34,18 +32,17 @@ class CustomerFavorites extends Component {
     }
 
     viewProduct(favorite){
-        var spl = favorite.link.split("/")
-        var productId = spl.slice(-1);
-
-        history.push("accounts/customers/" + this.props.customer._id + "/products/" + productId)
+        console.log("favorite ", favorite)
+        localStorage.setItem("productId", favorite.id)
+        history.push("/accounts/customers/" + customerId + "/product/" + favorite.id)
     }
 
     render() {    
         customers = this.props.customers.customers;
         if(first){
-            console.log("id : ", id)
+            console.log("id : ", customerId)
             for(var i = 0; i < customers.length; i++){
-                if(customers[i]._id === id){
+                if(customers[i]._id === customerId){
                     customer = customers[i];
                     break;
                 }

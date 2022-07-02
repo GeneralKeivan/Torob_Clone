@@ -27,19 +27,10 @@ export const getCustomer = (customerId) => {
     }
 }
 
-export const updateCustomerFavorite = (product, customerId) => {
-    var allCustomers = fetch(API_URL + 'customers');
-    var customer;
-
-    for(var i = 0; i < allCustomers.length; i++){
-        if(allCustomers[i]._id === customerId){
-            customer = allCustomers[i];
-            i = allCustomers.length + 1;
-        }
-    }
-
-    customer.favorites.push({"name" : product.name, "link" : product.link});
+export const updateCustomerFavorite = (customer) => {
     console.log("update customer ", customer);
+    
+
     return (dispatch) => {
         return axios.put(API_URL + 'customers/', customer)
             .then((res) => {
@@ -48,21 +39,12 @@ export const updateCustomerFavorite = (product, customerId) => {
     }
 }
 
-export const updateCustomerRecent = (product, customerId) => {
-    var allCustomers = fetch(API_URL + 'customers');
-    var customer;
-
-    for(var i = 0; i < allCustomers.length; i++){
-        if(allCustomers[i]._id === customerId){
-            customer = allCustomers[i];
-            i = allCustomers.length + 1;
-        }
-    }
-
-    customer.recents.push({name:product.name, link:product.link});
+export const updateCustomerRecent = (product, customer) => {
     console.log("update customer ", customer);
+    customer.recents.push({name:product.name, id:product.id});
+
     return (dispatch) => {
-        return axios.put(API_URL + 'customers/' + customerId, customer)
+        return axios.put(API_URL + 'customers/', customer)
             .then((res) => {
                 console.log("response ", res);
             });

@@ -12,11 +12,11 @@ let sellerSchema = new Schema({
     phone    : {type:Number, default : null},
     store    : [
         {
-            name        : {type:String, default : null, unique : true},
-            id          : {type:String, default : null, unique : true},
+            name        : {type:String, default : null},
+            id          : {type:String, default : null},
             products    : [
                 {
-                    id   : {type:String, default : null, unique : true},
+                    id   : {type:String, default : null},
                     name : {type:String, default : null},
                     price : {type:Number, default : null},
                     link : {type:String, default : null},

@@ -11,6 +11,7 @@ var first;
 var cont = false;
 const url = window.location.href.split('/');
 const id = localStorage.getItem("sellerId");
+//localStorage.removeItem("storeId")
 class SellerDetails extends React.Component {
     constructor(props){
         super(props);

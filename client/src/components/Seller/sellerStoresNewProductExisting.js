@@ -26,12 +26,6 @@ var myProduct = {
     cheap : "",
     expensive : "",
     sellers : [
-        {
-            name : "",
-            phone : "",
-            price : "",
-            link : ""
-        }
     ],
     size : "",
     weight : "",
@@ -76,26 +70,37 @@ class SellerStoresNewProductExisting extends React.Component {
                 seller = sellers[i];
             }
         }
-
-        var storeIndex = parseInt(sellerId) - 1
+        storeId = localStorage.getItem("storeId")
 
         var price = parseInt(document.forms["myForm"]["price"].value);
         var link = document.forms["myForm"]["link"].value;
 
+        myProduct = JSON.parse(sessionStorage.getItem("product"))
+        sessionStorage.removeItem("product")
+
         myProduct.link = link;
         myProduct.price = price;
-        myProduct.sellers.push({id:sellerId, name: seller.name, phone: seller.phone, price: price, link: link})
+        if(price < myProduct.cheap){
+            myProduct.cheap = price;
+        }
+        if(price > myProduct.expensive){
+            myProduct.expensive = price;
+        }
+
+        console.log("myProducts ", myProduct)
+        console.log("seller ", seller)
+        myProduct.sellers.push({id:sellerId, name: seller.userName, phone: seller.phone, price: price, link: link})
 
 
         if(isNaN(price)){
             window.alert("The entered Price must be a number");
         }
         else{
-            
+            console.log("My Product = ", myProduct)
             this.props.updateProduct(myProduct, sellerId, storeId)
             //This might be wrong because of the id
-            console.log("Store ", seller.store[storeIndex])
-            seller.store[storeIndex].products.push({name: myProduct.name, model: myProduct.model, brand: myProduct.brand, price:price, link:link})
+            console.log("Store ", seller.store[parseInt(storeId) - 1])
+            seller.store[parseInt(storeId) - 1].products.push({name: myProduct.name, model: myProduct.model, brand: myProduct.brand, price:price, link:link})
             this.props.updateSeller(seller);
         }
     }
@@ -115,17 +120,24 @@ class SellerStoresNewProductExisting extends React.Component {
         myProduct.model = product.model;
         myProduct.brand = product.brand;
 
+        myProduct.cheap = product.cheap;
+        myProduct.expensive = product.expensive;
+        myProduct.sellers = product.sellers;
+        myProduct._id = product._id;
+
 
         chosen = true;
         sessionStorage.setItem("chosen", "true")
+        sessionStorage.setItem("product", JSON.stringify(myProduct))
         window.location.reload();
     }
 
     render(){
+        sellers = this.props.sellers.sellers;
+        products = this.props.products.products;
         console.log("chosen ", chosen)
         if(first){
-            sellers = this.props.sellers.sellers;
-            products = this.props.products.products;
+
             for(var i = 0; i < sellers.length; i++){
                 if(sellers[i]._id === sellerId){
                     seller = sellers[i];

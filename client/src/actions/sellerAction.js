@@ -17,7 +17,7 @@ export const updateSeller = (seller) => {
             .then((res) => {
                 console.log("response ", res);
                 
-                history.push(`/accounts/sellers/` + sellerId)
+                history.push("/accounts/sellers/" + sellerId)
             });
     }
 }
@@ -28,7 +28,7 @@ export const addStore = (seller) => {
         return axios.put(API_URL + 'sellers/', seller)
             .then((res) => {
                 console.log("response ", res);
-                history.push('/accounts/sellers/' + sellerId + '/stores')
+                history.push("/accounts/sellers/" + sellerId + "/stores")
             });
     }
 }
