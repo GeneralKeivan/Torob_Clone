@@ -71,7 +71,7 @@ class CustomerLaptops extends Component {
 
         //might need to add a .products to the end of fetch
         for(var i = 0; i < products.length; i++){
-            if((String(products[i].name).inludes(searchBar) || String(products[i].brand).inludes(searchBar)) && products[i].model === "laptop"){
+            if((String(products[i].name).includes(searchBar) || String(products[i].brand).includes(searchBar)) && products[i].model === "laptop"){
                 searchedProducts.push(products[i])
             }
         }
@@ -114,6 +114,7 @@ class CustomerLaptops extends Component {
         products = this.props.products.products;
         if(first){
           console.log("products: ", products)
+          laptopProducts = [];
           for(var i = 0; i < products.length; i++){
               if(products[i].model === "laptop"){
                   laptopProducts.push(products[i])

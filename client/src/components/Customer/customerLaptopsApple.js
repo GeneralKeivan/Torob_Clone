@@ -109,6 +109,7 @@ class CustomerLaptopApple extends Component {
       products = this.props.products.products;
       if(first){
         console.log("products: ", products)
+        laptopProducts = [];
         for(var i = 0; i < products.length; i++){
             if(products[i].model === "laptop" && products[i].brand === "apple"){
                 laptopProducts.push(products[i])

@@ -112,6 +112,7 @@ class CustomerTabletXiaomi extends Component {
     render() {
       products = this.props.products.products;
       if(first){
+        tabletProducts = [];
         console.log("products: ", products)
         for(var i = 0; i < products.length; i++){
             if(products[i].model === "tablet" && products[i].brand === "xiaomi"){

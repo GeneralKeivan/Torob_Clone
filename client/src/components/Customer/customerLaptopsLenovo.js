@@ -113,6 +113,7 @@ class CustomerLaptopLenovo extends Component {
     render() {
       products = this.props.products.products;
       if(first){
+        laptopProducts = [];
         console.log("products: ", products)
         for(var i = 0; i < products.length; i++){
             if(products[i].model === "laptop" && products[i].brand === "lenovo"){

@@ -111,8 +111,10 @@ class CustomerMobileSamsung extends Component {
 
     render() {
       products = this.props.products.products;
+
       if(first){
         console.log("products: ", products)
+        mobileProducts = [];
         for(var i = 0; i < products.length; i++){
             if(products[i].model === "mobile" && products[i].brand === "samsung"){
                 mobileProducts.push(products[i])

@@ -113,7 +113,9 @@ class CustomerMobiles extends Component {
     render() {
         //might need to change this customer
         products = this.props.products.products;
+       
         if(first){
+          mobileProducts = [];
           console.log("products: ", products)
           for(var i = 0; i < products.length; i++){
               if(products[i].model === "mobile"){

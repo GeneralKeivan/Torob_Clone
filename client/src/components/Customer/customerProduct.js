@@ -47,6 +47,7 @@ class CustomerProduct extends Component {
 
         if(first){
             products = this.props.products;
+            
             for(var i = 0; i < products.length; i++){
                 if(products[i]._id === productId){
                     product = products[i];
