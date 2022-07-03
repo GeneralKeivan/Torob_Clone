@@ -30,3 +30,13 @@ Add new product
 
 Product details
 ![productdatail](https://github.com/GeneralKeivan/Torob_Clone/blob/main/pictures/productdetail.png)
+
+
+
+
+
+Compare prices
+![compareprices](https://github.com/GeneralKeivan/Torob_Clone/blob/main/pictures/products%60.png)
+
+
+
