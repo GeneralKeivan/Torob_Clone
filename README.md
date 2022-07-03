@@ -8,5 +8,13 @@ Table of Contents
 5. Compare prices
 
 
+sign in section
 
 ![login](https://github.com/GeneralKeivan/Torob_Clone/blob/main/pictures/login.png)
+
+
+
+
+Sign up section
+
+![signup](https://github.com/GeneralKeivan/Torob_Clone/blob/main/pictures/signupseller.png)
